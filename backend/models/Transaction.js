@@ -9,4 +9,14 @@ const TransactionSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
+TransactionSchema.methods.toPublicJSON = function() {
+    return {
+        id: this._id.toString(),
+        categoryId: this.categoryId,
+        amount: this.amount,
+        description: this.type,
+        createdAt: this.createdAt
+    };
+};
+
 module.exports = mongoose.model('Transaction', TransactionSchema);
