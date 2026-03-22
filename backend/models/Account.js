@@ -8,4 +8,13 @@ const AccountSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
+AccountSchema.methods.toPublicJSON = function() {
+    return {
+        id: this._id.toString(),
+        name: this.name,
+        balance: this.balance,
+        currency: this.currency,
+    };
+};
+
 module.exports = mongoose.model('Account', AccountSchema);

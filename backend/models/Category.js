@@ -7,4 +7,12 @@ const CategorySchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
+CategorySchema.methods.toPublicJSON = function() {
+    return {
+        id: this._id.toString(),
+        name: this.name,
+        type: this.type,
+    };
+};
+
 module.exports = mongoose.model('Category', CategorySchema);

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -6,5 +7,20 @@ const UserSchema = new mongoose.Schema({
     passwordHash: { type: String, required: true }, 
     createdAt: { type: Date, default: Date.now }
 });
+
+UserSchema.methods.getId = function() {
+    return this._id.toString();
+};
+
+UserSchema.methods.checkPassword = function(password) {
+    return bcrypt.compare(password, this.passwordHash);
+}
+
+UserSchema.methods.toPublicJSON = function() {
+    return {
+        name: this.name,
+        email: this.email,
+    };
+};
 
 module.exports = mongoose.model('User', UserSchema);
