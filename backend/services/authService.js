@@ -5,9 +5,8 @@ const APIError = require('../utils/APIError');
 
 const register = async (name, email, password) => {
   const existingUser = await User.findOne({ email });
-  if (existingUser) {
-    throw new APIError('User already exists', 409);
-  }
+  if (existingUser)
+    throw new APIError(409, "User already exists");
 
   const hashed = await hashPassword(password);
 
@@ -25,14 +24,12 @@ const register = async (name, email, password) => {
 
 const login = async (email, password) => {
   const user = await User.findOne({ email });
-  if (!user) {
-    throw new APIError('Invalid credentials', 401);
-  }
+  if (!user)
+    throw new APIError(401, "Invalid credentials");
 
   const isMatch = await user.checkPassword(password);
-  if (!isMatch) {
-    throw new APIError('Invalid credentials', 401);
-  }
+  if (!isMatch)
+    throw new APIError(401, "Invalid credentials");
 
   return {
     user: user.toPublicJSON(),
@@ -40,59 +37,7 @@ const login = async (email, password) => {
   };
 };
 
-const getMe = async (id) => {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new APIError('Invalid user ID', 400);
-    }
-
-    const user = await User.findById(id);
-    if (!user) {
-        throw new APIError('User not found', 404);
-    }
-
-    return {
-        user: user.toPublicJSON()
-    };
-};
-
-const updateMe = async (id, name) => {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new APIError('Invalid user ID', 400);
-    }
-
-    const user = await User.findByIdAndUpdate(
-        id,
-        { $set: { name } },
-        { new: true }
-    );
-    if (!user) {
-        throw new APIError('User not found', 404);
-    }
-
-    return {
-        user: user.toPublicJSON()
-    };
-};
-
-const deleteMe = async (id, email, password) => {
-    await login(email, password); // will throw if credentials are invalid
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new APIError('Invalid user ID', 400);
-    }
-
-    const user = await User.findByIdAndDelete(id);
-    if (!user) {
-        throw new APIError('User not found', 404);
-    }
-
-    return 204; // No content
-};
-
 module.exports = {
   register,
   login,
-  getMe,
-  updateMe,
-  deleteMe
 };

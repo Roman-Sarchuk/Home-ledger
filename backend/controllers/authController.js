@@ -1,69 +1,41 @@
-const User = require('../models/User');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const authService = require('../services/authService');
+const authService = require("../services/authService");
+const APIError = require("../utils/APIError");
 
-/**
- * @description 
- * req.body: { name: string, email: string, password: string }
- * response: { user: User.toPublicJSON(), token: string } 
- */
+
 exports.register = async (req, res) => {
-    try {
-        const { name, email, password } = req.body;
-        
-        const result = await authService.register(name, email, password);
-        res.json(result);
-    } catch (apiError) {
-        res.status(apiError.statusCode || 500).send(apiError.message);
-    }
+  // Get user input
+  const { name, email, password } = req.body;
+
+  // Validate user input
+  if (!name || name.trim() === "") {
+    throw new APIError(400, "Incorrect parameters", "Name are required");
+  } else if (!email || email.trim() === "") {
+    throw new APIError(400, "Incorrect parameters", "Email are required");
+  } else if (!password || password.trim() === "") {
+    throw new APIError(400, "Incorrect parameters", "Password are required");
+  }
+
+  // Perform logic
+  const result = await authService.register(name, email, password);
+
+  // Send response
+  res.status(201).json(result);
 };
 
-/**
- * @description
- * req.body: { email: string, password: string }
- * response: { user: User.toPublicJSON(), token: string } 
- */
 exports.login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-        
-        const result = await authService.login(email, password);
-        res.json(result);
-    } catch (apiError) {
-        res.status(apiError.statusCode || 500).send(apiError.message);
-    }
-};
+  // Get user input
+  const { email, password } = req.body;
 
-/**
- * @description
- * req.body: { id: string }
- * response: { user: User.toPublicJSON() } 
- */
-exports.getMe = async (req, res) => {
-    try {
-        const { id } = req.body;
-        if (!mongoose.Types.ObjectId.isValid(id)) {
-            throw new APIError('Invalid user ID', 400);
-        }
+  // Validate user input
+  if (!email || email.trim() === "") {
+    throw new APIError(400, "Incorrect parameters", "Email are required");
+  } else if (!password || password.trim() === "") {
+    throw new APIError(400, "Incorrect parameters", "Password are required");
+  }
 
-        const user = await User.findById(id);
-        res.json(user.toPublicJSON());
-    } catch (apiError) {
-        res.status(apiError.statusCode || 500).send(apiError.message);
-    }
-};
+  // Perform logic
+  const result = await authService.login(email, password);
 
-exports.updateMe = async (req, res) => {
-    try {
-        const { name, email } = req.body;
-        const user = await User.findByIdAndUpdate(
-            req.user.id,
-            { $set: { name, email } },
-            { new: true }
-        ).select('-passwordHash');
-        res.json(user);
-    } catch (apiError) {
-        res.status(apiError.statusCode || 500).send(apiError.message);
-    }
+  // Send response
+  res.status(200).json(result);
 };
