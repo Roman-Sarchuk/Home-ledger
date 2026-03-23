@@ -8,6 +8,8 @@ const AccountSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
+AccountSchema.index({ userId: 1 });
+
 AccountSchema.methods.toPublicJSON = function() {
     return {
         id: this._id.toString(),
