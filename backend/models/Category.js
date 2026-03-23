@@ -7,6 +7,8 @@ const CategorySchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
+CategorySchema.index({ userId: 1, name: 1, type: 1 }, { unique: true });
+
 CategorySchema.methods.toPublicJSON = function() {
     return {
         id: this._id.toString(),
