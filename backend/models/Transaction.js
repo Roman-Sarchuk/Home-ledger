@@ -14,7 +14,7 @@ TransactionSchema.methods.toPublicJSON = function() {
         id: this._id.toString(),
         categoryId: this.categoryId,
         amount: this.amount,
-        description: this.type,
+        description: this.description,
         createdAt: this.createdAt
     };
 };
