@@ -11,9 +11,7 @@ app.use(express.json());
 
 // Connect routes
 app.use('/api/v1/auth', require('./routes/authRoutes'));
-// app.use('/api/accounts', require('./routes/accountRoutes'));
-// app.use('/api/categories', require('./routes/categoryRoutes'));
-// app.use('/api/transactions', require('./routes/transactionRoutes'));
+app.use('/api/v1/users', require('./routes/userRoutes'));
 
 // root route
 app.get('/', (req, res) => {
