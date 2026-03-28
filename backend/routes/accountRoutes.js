@@ -1,13 +1,20 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const auth = require('../middleware/authMiddleware');
-const accountController = require('../controllers/accountController');
+const auth = require("../middleware/authMiddleware");
+const {
+	getAccounts,
+	getAccountById,
+	createAccount,
+	updateAccount,
+	deleteAccount,
+} = require("../controllers/accountController");
 
-router.use(auth); // Захищаємо всі маршрути
+router.use(auth);
 
-router.get('/', accountController.getAccounts);
-router.post('/', accountController.createAccount);
-router.put('/:id', accountController.updateAccount);
-router.delete('/:id', accountController.deleteAccount);
+router.get("/", getAccounts);
+router.get("/:id", getAccountById);
+router.post("/", createAccount);
+router.patch("/:id", updateAccount);
+router.delete("/:id", deleteAccount);
 
 module.exports = router;
