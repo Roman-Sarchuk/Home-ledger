@@ -1,44 +1,54 @@
-const Account = require('../models/Account');
+const accountService = require("../services/accountService");
 
 exports.getAccounts = async (req, res) => {
-    try {
-        const accounts = await Account.find({ userId: req.user.id });
-        res.json(accounts);
-    } catch (err) {
-        res.status(500).send('Server error');
-    }
+  const userId = req.user.id;
+  const { page, limit } = req.query;
+
+  // Step 2: add controller-level validation for pagination params.
+  const result = await accountService.getAccounts(userId, { page, limit });
+
+  res.status(200).json(result);
+};
+
+exports.getAccountById = async (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+
+  // Step 2: add controller-level validation for account id.
+  const result = await accountService.getAccountById(userId, id);
+
+  res.status(200).json(result);
 };
 
 exports.createAccount = async (req, res) => {
-    try {
-        const newAccount = new Account({ ...req.body, userId: req.user.id });
-        const account = await newAccount.save();
-        res.json(account);
-    } catch (err) {
-        res.status(500).send('Server error');
-    }
+  const userId = req.user.id;
+  const { name, currency } = req.body;
+
+  // Step 2: add controller-level payload validation.
+  const result = await accountService.createAccount(userId, { name, currency });
+
+  res.status(201).json(result);
 };
 
 exports.updateAccount = async (req, res) => {
-    try {
-        const account = await Account.findOneAndUpdate(
-            { _id: req.params.id, userId: req.user.id },
-            { $set: req.body },
-            { new: true }
-        );
-        if (!account) return res.status(404).json({ msg: 'Рахунок не знайдено' });
-        res.json(account);
-    } catch (err) {
-        res.status(500).send('Server error');
-    }
+  const userId = req.user.id;
+  const { id } = req.params;
+  const { name, currency } = req.body;
+
+  // Step 2: add controller-level payload validation.
+  const result = await accountService.updateAccount(userId, id, {
+    name,
+    currency,
+  });
+
+  res.status(200).json(result);
 };
 
 exports.deleteAccount = async (req, res) => {
-    try {
-        const account = await Account.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
-        if (!account) return res.status(404).json({ msg: 'Рахунок не знайдено' });
-        res.json({ msg: 'Рахунок видалено' });
-    } catch (err) {
-        res.status(500).send('Server error');
-    }
+  const userId = req.user.id;
+  const { id } = req.params;
+
+  const resultCode = await accountService.deleteAccount(userId, id);
+
+  res.status(resultCode).send();
 };
