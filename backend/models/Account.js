@@ -1,16 +1,42 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const AccountSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
-    name: { type: String, required: true },
-    balance: { type: Number, default: 0 },
-    currency: { type: String, default: 'UAH' },
-    createdAt: { type: Date, default: Date.now }
-});
+const SUPPORTED_CURRENCIES = ["UAH", "USD", "EUR"];
+const DEFAULT_CURRENCY = "UAH";
 
-AccountSchema.index({ userId: 1 });
+const AccountSchema = new mongoose.Schema(
+    {
+        userId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+            index: true,
+        },
+        name: {
+            type: String,
+            required: true,
+            trim: true,
+            maxlength: 100,
+        },
+        balance: {
+            type: Number,
+            default: 0,
+            min: 0,
+        },
+        currency: {
+            type: String,
+            enum: SUPPORTED_CURRENCIES,
+            default: DEFAULT_CURRENCY,
+        },
+    },
+    {
+        timestamps: true,
+        versionKey: false,
+    },
+);
 
-AccountSchema.methods.toPublicJSON = function() {
+AccountSchema.index({ userId: 1, name: 1 }, { unique: true });
+
+AccountSchema.methods.toPublicJSON = function () {
     return {
         id: this._id.toString(),
         name: this.name,
@@ -19,4 +45,4 @@ AccountSchema.methods.toPublicJSON = function() {
     };
 };
 
-module.exports = mongoose.model('Account', AccountSchema);
+module.exports = mongoose.model("Account", AccountSchema);
