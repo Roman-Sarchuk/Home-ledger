@@ -8,6 +8,15 @@ const deleteMe = async (id) => {
 };
 
 const updateMe = async (id, name) => {
+  // Validate user input
+  if (!name || name.trim() === "") {
+    throw new APIError(
+      400,
+      "Validation failed",
+      "Name is required and cannot be empty",
+    );
+  }
+
   const user = await User.findByIdAndUpdate(
     id,
     { $set: { name } },
