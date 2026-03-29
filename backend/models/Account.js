@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
-const SUPPORTED_CURRENCIES = ["UAH", "USD", "EUR"];
-const DEFAULT_CURRENCY = "UAH";
+const { SUPPORTED_CURRENCIES, DEFAULT_CURRENCY } = require("../utils/currencyHelper");
 
 const AccountSchema = new mongoose.Schema(
     {
