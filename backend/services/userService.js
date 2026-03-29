@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 const Account = require("../models/Account");
 const Category = require("../models/Category");
-const Transaction = require("../models/Transaction"); // Переконайся, що ці моделі імпортовані
+const Transaction = require("../models/Transaction");
 const APIError = require("../utils/APIError");
 
 const deleteMe = async (id) => {
