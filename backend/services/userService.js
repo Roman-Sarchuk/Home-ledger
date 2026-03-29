@@ -1,8 +1,28 @@
+const mongoose = require("mongoose");
 const User = require("../models/User");
+const Account = require("../models/Account");
+const Category = require("../models/Category");
+const Transaction = require("../models/Transaction"); // Переконайся, що ці моделі імпортовані
 const APIError = require("../utils/APIError");
 
 const deleteMe = async (id) => {
-  const user = await User.findByIdAndDelete(id);
+  const session = await mongoose.startSession();
+
+  try {
+    await session.withTransaction(async () => {
+      const user = await User.findByIdAndDelete(id, { session });
+
+      if (!user) {
+        throw new APIError(404, "User not found");
+      }
+
+      await Transaction.deleteMany({ userId: id }, { session });
+      await Account.deleteMany({ userId: id }, { session });
+      await Category.deleteMany({ userId: id }, { session });
+    });
+  } finally {
+    await session.endSession();
+  }
 
   return 204; // No content
 };
