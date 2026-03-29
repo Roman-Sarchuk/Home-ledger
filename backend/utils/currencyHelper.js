@@ -8,7 +8,7 @@ const validateCurrency = (currency) => {
     throw new APIError(
       400,
       "Incorrect parameters",
-      "Incorrect currency. It should be ISO 4217: UAH, USD, EUR",
+      "Incorrect currency. It should be ISO 4217: " + SUPPORTED_CURRENCIES.join(", "),
     );
   }
 };
