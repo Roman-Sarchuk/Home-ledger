@@ -6,6 +6,7 @@ const app = require("../app");
 const User = require("../models/User");
 const { Category } = require("../models/Category");
 const Transaction = require("../models/Transaction");
+const Account = require("../models/Account");
 const { registerUserAndGetToken } = require("./helpers/authTestHelper");
 
 let mongoServer;
@@ -25,6 +26,8 @@ describe("Category API", () => {
     await Promise.all([
       User.deleteMany({}),
       Category.deleteMany({}),
+      Transaction.deleteMany({}),
+      Account.deleteMany({}),
     ]);
   });
 
@@ -256,11 +259,31 @@ describe("Category API", () => {
       expect(res.statusCode).toEqual(404);
       expect(res.body).toHaveProperty("detail", "Category not found");
     });
+
+    it("should return 403 when updating a system category", async () => {
+      const { token } = await registerUserAndGetToken();
+      const user = await User.findOne({});
+      const systemCategory = await Category.findOne({
+        userId: user._id,
+        name: "Expense",
+        type: "expense",
+        isSystem: true,
+      });
+
+      const res = await request(app)
+        .patch(`/api/v1/categories/${systemCategory._id}`)
+        .set("Authorization", token)
+        .send({ name: "Edited default" });
+
+      expect(res.statusCode).toEqual(403);
+      expect(res.body).toHaveProperty("detail", "Default categories cannot be modified");
+    });
   });
 
   describe("DELETE /api/v1/categories/:id", () => {
-    it("should delete category and related transactions", async () => {
+    it("should delete custom category and reassign transactions to matching system category", async () => {
       const { token } = await registerUserAndGetToken();
+      const user = await User.findOne({});
 
       const accountRes = await request(app)
         .post("/api/v1/accounts")
@@ -281,6 +304,11 @@ describe("Category API", () => {
       const categoryId = categoryRes.body.category.id;
       const accountId = accountRes.body.account.id;
       const categoryDoc = await Category.findById(categoryId);
+      const defaultExpenseCategory = await Category.findOne({
+        userId: user._id,
+        type: "expense",
+        isSystem: true,
+      });
 
       await Transaction.create({
         userId: categoryDoc.userId,
@@ -301,9 +329,14 @@ describe("Category API", () => {
 
       const category = await Category.findById(categoryId);
       const afterDeleteCount = await Transaction.countDocuments({ categoryId });
+      const reassignedTransactions = await Transaction.find({
+        categoryId: defaultExpenseCategory._id,
+      });
 
       expect(category).toBeNull();
       expect(afterDeleteCount).toEqual(0);
+      expect(reassignedTransactions).toHaveLength(1);
+      expect(reassignedTransactions[0]).toHaveProperty("description", "Groceries");
     });
 
     it("should return 404 when deleting non-existing category", async () => {
@@ -316,6 +349,24 @@ describe("Category API", () => {
 
       expect(res.statusCode).toEqual(404);
       expect(res.body).toHaveProperty("detail", "Category not found");
+    });
+
+    it("should return 403 when deleting a system category", async () => {
+      const { token } = await registerUserAndGetToken();
+      const user = await User.findOne({});
+      const systemCategory = await Category.findOne({
+        userId: user._id,
+        name: "Income",
+        type: "income",
+        isSystem: true,
+      });
+
+      const res = await request(app)
+        .delete(`/api/v1/categories/${systemCategory._id}`)
+        .set("Authorization", token);
+
+      expect(res.statusCode).toEqual(403);
+      expect(res.body).toHaveProperty("detail", "Default categories cannot be deleted");
     });
   });
 });
