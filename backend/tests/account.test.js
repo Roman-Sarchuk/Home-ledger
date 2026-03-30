@@ -6,7 +6,7 @@ const app = require("../app");
 const User = require("../models/User");
 const Account = require("../models/Account");
 const Transaction = require("../models/Transaction");
-const Category = require("../models/Category");
+const { Category } = require("../models/Category");
 const { registerUserAndGetToken } = require("./helpers/authTestHelper");
 
 let mongoServer;

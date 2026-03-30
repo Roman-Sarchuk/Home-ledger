@@ -4,8 +4,7 @@ const { MongoMemoryReplSet } = require("mongodb-memory-server");
 
 const app = require("../app");
 const User = require("../models/User");
-const Account = require("../models/Account");
-const Category = require("../models/Category");
+const { Category } = require("../models/Category");
 const Transaction = require("../models/Transaction");
 const { registerUserAndGetToken } = require("./helpers/authTestHelper");
 
@@ -25,16 +24,14 @@ describe("Category API", () => {
   beforeEach(async () => {
     await Promise.all([
       User.deleteMany({}),
-      Account.deleteMany({}),
       Category.deleteMany({}),
-      Transaction.deleteMany({}),
     ]);
   });
 
   afterAll(async () => {
     await mongoose.connection.close();
     await mongoServer.stop();
-  });
+  });                                                                                                                                                                                                                          
 
   describe("GET /api/v1/categories", () => {
     it("should return paginated categories for current user", async () => {

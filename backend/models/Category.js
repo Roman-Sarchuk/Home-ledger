@@ -23,4 +23,9 @@ CategorySchema.methods.getAllowedTypes = function() {
     return ALLOWED_TYPES;
 };
 
-module.exports = mongoose.model('Category', CategorySchema);
+const Category = mongoose.model('Category', CategorySchema);
+
+module.exports = {
+    Category,
+    ALLOWED_TYPES
+}

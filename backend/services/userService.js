@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("../models/User");
 const Account = require("../models/Account");
-const Category = require("../models/Category");
+const { Category } = require("../models/Category");
 const Transaction = require("../models/Transaction");
 const APIError = require("../utils/APIError");
 

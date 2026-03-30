@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
-const Category = require("../models/Category");
+const { Category, ALLOWED_TYPES } = require("../models/Category");
 const Transaction = require("../models/Transaction");
 const APIError = require("../utils/APIError");
-
-const ALLOWED_TYPES = Category().getAllowedTypes();
 
 const validateCategoryType = (type) => {
   if (!ALLOWED_TYPES.includes(type)) {
