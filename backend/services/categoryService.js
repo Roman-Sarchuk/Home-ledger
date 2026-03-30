@@ -77,6 +77,10 @@ const updateCategory = async (userId, categoryId, name, type) => {
     throw new APIError(404, "Category not found");
   }
 
+  if (category.isSystem) {
+    throw new APIError(403, "Default categories cannot be modified");
+  }
+
   if (name !== undefined && name !== category.name) {
     if (name.trim() === "") {
       throw new APIError(400, "Incorrect parameters", "Category name cannot be empty");
@@ -116,16 +120,34 @@ const deleteCategory = async (userId, categoryId) => {
 
   try {
     await session.withTransaction(async () => {
-      const category = await Category.findOneAndDelete(
-        { _id: categoryId, userId },
-        { session },
-      );
+      const category = await Category.findOne({ _id: categoryId, userId }).session(session);
 
       if (!category) {
         throw new APIError(404, "Category not found");
       }
 
-      await Transaction.deleteMany({ userId, categoryId }, { session });
+      if (category.isSystem) {
+        throw new APIError(403, "Default categories cannot be deleted");
+      }
+
+      const defaultCategory = await Category.findOne({
+        userId,
+        type: category.type,
+        isSystem: true,
+        _id: { $ne: category._id },
+      }).session(session);
+
+      if (!defaultCategory) {
+        throw new APIError(500, "Default category for this type not found");
+      }
+
+      await Transaction.updateMany(
+        { userId, categoryId: category._id },
+        { $set: { categoryId: defaultCategory._id } },
+        { session },
+      );
+
+      await Category.deleteOne({ _id: category._id, userId }, { session });
     });
   } finally {
     await session.endSession();
