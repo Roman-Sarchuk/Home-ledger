@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const ALLOWED_TYPES = ["income", "expense"];
 
+const DEFAULT_SYSTEM_CATEGORIES = [
+  { name: "Income", type: "income" },
+  { name: "Expense", type: "expense" },
+];
+
 const CategorySchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     name: { type: String, required: true },
@@ -29,5 +34,6 @@ const Category = mongoose.model('Category', CategorySchema);
 
 module.exports = {
     Category,
-    ALLOWED_TYPES
+    ALLOWED_TYPES,
+    DEFAULT_SYSTEM_CATEGORIES,
 }

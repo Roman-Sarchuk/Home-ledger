@@ -1,4 +1,6 @@
+const mongoose = require("mongoose");
 const User = require("../models/User");
+const { Category, DEFAULT_SYSTEM_CATEGORIES } = require("../models/Category");
 const hashPassword = require("../utils/hashPassword");
 const generateToken = require("../utils/generateToken");
 const APIError = require("../utils/APIError");
@@ -18,11 +20,30 @@ const register = async (name, email, password) => {
 
   const hashed = await hashPassword(password);
 
-  const user = await User.create({
-    name,
-    email,
-    passwordHash: hashed,
-  });
+  const session = await mongoose.startSession();
+  let user;
+
+  try {
+    await session.withTransaction(async () => {
+      user = new User({
+        name,
+        email,
+        passwordHash: hashed,
+      });
+
+      await user.save({ session });
+
+      const defaultCategories = DEFAULT_SYSTEM_CATEGORIES.map((category) => ({
+        ...category,
+        userId: user._id,
+        isSystem: true,
+      }));
+
+      await Category.insertMany(defaultCategories, { session });
+    });
+  } finally {
+    await session.endSession();
+  }
 
   return {
     user: user.toPublicJSON(),
