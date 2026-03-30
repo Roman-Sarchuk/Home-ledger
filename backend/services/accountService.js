@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Account = require("../models/Account");
 const Transaction = require("../models/Transaction");
 const APIError = require("../utils/APIError");
@@ -106,6 +107,8 @@ const deleteAccount = async (userId, accountId) => {
   if (accountId === undefined) {
     throw new APIError(400, "Incorrect parameters", "Account ID is required");
   }
+
+  const session = await mongoose.startSession();
 
   try {
     await session.withTransaction(async () => {
