@@ -13,6 +13,7 @@ app.use(express.json());
 app.use('/api/v1/auth', require('./routes/authRoutes'));
 app.use('/api/v1/users', require('./routes/userRoutes'));
 app.use('/api/v1/accounts', require('./routes/accountRoutes'));
+app.use('/api/v1/categories', require('./routes/categoryRoutes'));
 
 // root route
 app.get('/', (req, res) => {

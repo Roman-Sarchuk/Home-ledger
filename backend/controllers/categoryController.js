@@ -1,26 +1,63 @@
-const Category = require('../models/Category');
+const categoryService = require("../services/categoryService");
+const { parsePagePagination } = require("../utils/parsePagination");
 
 exports.getCategories = async (req, res) => {
-    const categories = await Category.find({ userId: req.user.id });
-    res.json(categories);
+  // Get user input
+  const userId = req.user.id;
+  const pagePagination = parsePagePagination(req.query.page, req.query.limit);
+
+  // Perform logic
+  const result = await categoryService.getCategories(userId, pagePagination);
+
+  // Send response
+  res.status(200).json(result);
+};
+
+exports.getCategoryById = async (req, res) => {
+  // Get user input
+  const userId = req.user.id;
+  const { id } = req.params;
+
+  // Perform logic
+  const result = await categoryService.getCategoryById(userId, id);
+
+  // Send response
+  res.status(200).json(result);
 };
 
 exports.createCategory = async (req, res) => {
-    const category = new Category({ ...req.body, userId: req.user.id });
-    await category.save();
-    res.json(category);
+  // Get user input
+  const userId = req.user.id;
+  const { name, type } = req.body;
+
+  // Perform logic
+  const result = await categoryService.createCategory(userId, name, type);
+
+  // Send response
+  res.status(201).json(result);
 };
 
 exports.updateCategory = async (req, res) => {
-    const category = await Category.findOneAndUpdate(
-        { _id: req.params.id, userId: req.user.id },
-        { $set: req.body },
-        { new: true }
-    );
-    res.json(category);
+  // Get user input
+  const userId = req.user.id;
+  const { id } = req.params;
+  const { name, type } = req.body;
+
+  // Perform logic
+  const result = await categoryService.updateCategory(userId, id, name, type);
+
+  // Send response
+  res.status(200).json(result);
 };
 
 exports.deleteCategory = async (req, res) => {
-    await Category.findOneAndDelete({ _id: req.params.id, userId: req.user.id });
-    res.json({ msg: 'Категорію видалено' });
+  // Get user input
+  const userId = req.user.id;
+  const { id } = req.params;
+
+  // Perform logic
+  const resultCode = await categoryService.deleteCategory(userId, id);
+
+  // Send response
+  res.status(resultCode).send();
 };
