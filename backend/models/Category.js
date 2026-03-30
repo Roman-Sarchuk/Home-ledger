@@ -6,6 +6,7 @@ const CategorySchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     name: { type: String, required: true },
     type: { type: String, enum: ALLOWED_TYPES, required: true },
+    isSystem: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now }
 });
 
@@ -16,6 +17,7 @@ CategorySchema.methods.toPublicJSON = function() {
         id: this._id.toString(),
         name: this.name,
         type: this.type,
+        isSystem: this.isSystem,
     };
 };
 
