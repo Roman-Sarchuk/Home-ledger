@@ -1,17 +1,25 @@
 const request = require("supertest");
 const app = require("../app");
 const mongoose = require("mongoose");
-const { MongoMemoryServer } = require("mongodb-memory-server");
+const { MongoMemoryReplSet } = require("mongodb-memory-server");
+
+const User = require("../models/User");
+const { registerUserAndGetToken } = require("./helpers/authTestHelper");
 
 let mongoServer;
+
 require("dotenv").config();
 
 describe("User API", () => {
   beforeAll(async () => {
     process.env.JWT_SECRET = "DwD6fjjd2BLTBazHZt9ZTRs7VPpNtfHT7CMdpMxb2Y4"; // Set a test JWT secret
-    mongoServer = await MongoMemoryServer.create();
+    mongoServer = await MongoMemoryReplSet.create({ replSet: { count: 1 } });
     const uri = mongoServer.getUri();
     await mongoose.connect(uri);
+  });
+
+  beforeEach(async () => {
+    await Promise.all([User.deleteMany({})]);
   });
 
   afterAll(async () => {
@@ -21,21 +29,11 @@ describe("User API", () => {
 
   describe("DELETE /api/v1/users/me", () => {
     it("should return 204 No Content", async () => {
-      const registerRes = await request(app)
-        .post("/api/v1/auth/register")
-        .send({
-          name: "Test User 2",
-          email: "user2@example.com",
-          password: "password123",
-        });
-
-      expect(registerRes.statusCode).toEqual(201);
-      expect(registerRes.body).toHaveProperty("token");
-      const userToken = registerRes.body.token;
+      const { token } = await registerUserAndGetToken();
 
       const res = await request(app)
         .delete("/api/v1/users/me")
-        .set("Authorization", userToken);
+        .set("Authorization", token);
 
       expect(res.statusCode).toEqual(204);
     });
@@ -52,21 +50,11 @@ describe("User API", () => {
 
   describe("PATCH /api/v1/users/me", () => {
     it("should return 200 OK", async () => {
-      const registerRes = await request(app)
-        .post("/api/v1/auth/register")
-        .send({
-          name: "Test User 3",
-          email: "user3@example.com",
-          password: "password123",
-        });
-
-      expect(registerRes.statusCode).toEqual(201);
-      expect(registerRes.body).toHaveProperty("token");
-      const userToken = registerRes.body.token;
+      const { token } = await registerUserAndGetToken();
 
       const res = await request(app)
         .patch("/api/v1/users/me")
-        .set("Authorization", userToken)
+        .set("Authorization", token)
         .send({
           name: "Updated User 3",
         });
@@ -85,21 +73,11 @@ describe("User API", () => {
     });
 
     it("should return 400 if invalid data provided", async () => {
-      const registerRes = await request(app)
-        .post("/api/v1/auth/register")
-        .send({
-          name: "Test User 4",
-          email: "user4@example.com",
-          password: "password123",
-        });
-
-      expect(registerRes.statusCode).toEqual(201);
-      expect(registerRes.body).toHaveProperty("token");
-      const userToken = registerRes.body.token;
+      const { token } = await registerUserAndGetToken();
 
       const res = await request(app)
         .patch("/api/v1/users/me")
-        .set("Authorization", userToken)
+        .set("Authorization", token)
         .send({
           name: "",
         });
