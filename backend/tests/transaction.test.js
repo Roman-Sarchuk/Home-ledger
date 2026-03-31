@@ -178,6 +178,57 @@ describe("Transaction API", () => {
       expect(res.statusCode).toEqual(400);
       expect(res.body).toHaveProperty("detail");
     });
+
+    it("should filter transactions by accountId", async () => {
+      const { token } = await registerUserAndGetToken();
+
+      const account1Res = await request(app)
+        .post("/api/v1/accounts")
+        .set("Authorization", token)
+        .send({ name: "Primary", currency: "UAH" });
+      const account1Id = account1Res.body.account.id;
+
+      const account2Res = await request(app)
+        .post("/api/v1/accounts")
+        .set("Authorization", token)
+        .send({ name: "Secondary", currency: "UAH" });
+      const account2Id = account2Res.body.account.id;
+
+      const categoryRes = await request(app)
+        .post("/api/v1/categories")
+        .set("Authorization", token)
+        .send({ name: "Food", type: "expense", icon: "🍔" });
+      const categoryId = categoryRes.body.category.id;
+
+      await request(app)
+        .post("/api/v1/transactions")
+        .set("Authorization", token)
+        .send({ accountId: account1Id, categoryId, amount: 100 });
+
+      await request(app)
+        .post("/api/v1/transactions")
+        .set("Authorization", token)
+        .send({ accountId: account2Id, categoryId, amount: 200 });
+
+      const res = await request(app)
+        .get(`/api/v1/transactions?accountId=${account1Id}`)
+        .set("Authorization", token);
+
+      expect(res.statusCode).toEqual(200);
+      expect(res.body.transactions).toHaveLength(1);
+      expect(res.body.transactions[0].amount).toEqual(100);
+    });
+
+    it("should return 400 for invalid accountId format", async () => {
+      const { token } = await registerUserAndGetToken();
+
+      const res = await request(app)
+        .get("/api/v1/transactions?accountId=invalid-account-id")
+        .set("Authorization", token);
+
+      expect(res.statusCode).toEqual(400);
+      expect(res.body).toHaveProperty("detail");
+    });
   });
 
   describe("GET /api/v1/transactions/:id", () => {
