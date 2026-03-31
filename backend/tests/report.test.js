@@ -47,7 +47,7 @@ describe("Reports API", () => {
         .send({ name: "Test Account", currency: "UAH" });
 
       const accountId = accountRes.body.account.id;
-      const userId = accountRes.body.account.userId || (await User.findOne({}, "_id")).toString();
+      const userDoc = await User.findOne({});
 
       // Create categories
       const incomeRes = await request(app)
@@ -69,14 +69,14 @@ describe("Reports API", () => {
       // Income transactions
       await Transaction.create([
         {
-          userId: new mongoose.Types.ObjectId(userId || (await User.findOne({}, "_id"))._id),
+          userId: userDoc._id,
           accountId: new mongoose.Types.ObjectId(accountId),
           categoryId: new mongoose.Types.ObjectId(incomeId),
           amount: 1000,
           createdAt: baseDate,
         },
         {
-          userId: new mongoose.Types.ObjectId(userId || (await User.findOne({}, "_id"))._id),
+          userId: userDoc._id,
           accountId: new mongoose.Types.ObjectId(accountId),
           categoryId: new mongoose.Types.ObjectId(incomeId),
           amount: 500,
@@ -84,14 +84,14 @@ describe("Reports API", () => {
         },
         // Expense transactions
         {
-          userId: new mongoose.Types.ObjectId(userId || (await User.findOne({}, "_id"))._id),
+          userId: userDoc._id,
           accountId: new mongoose.Types.ObjectId(accountId),
           categoryId: new mongoose.Types.ObjectId(expenseId),
           amount: 200,
           createdAt: new Date("2024-01-18"),
         },
         {
-          userId: new mongoose.Types.ObjectId(userId || (await User.findOne({}, "_id"))._id),
+          userId: userDoc._id,
           accountId: new mongoose.Types.ObjectId(accountId),
           categoryId: new mongoose.Types.ObjectId(expenseId),
           amount: 100,

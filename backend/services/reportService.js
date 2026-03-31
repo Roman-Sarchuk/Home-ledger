@@ -237,12 +237,27 @@ const getCashFlowReport = async (
   const totalMs = dateTo.getTime() - dateFrom.getTime();
   const intervalMs = totalMs / (limit - 1);
 
-  // Get all transactions
-  const transactions = await Transaction.find({
-    userId,
-    accountId,
-    createdAt: { $gte: dateFrom, $lte: dateTo },
-  });
+  // Get all transactions with category info
+  const transactions = await Transaction.aggregate([
+    {
+      $match: {
+        userId: new mongoose.Types.ObjectId(userId),
+        accountId: new mongoose.Types.ObjectId(accountId),
+        createdAt: { $gte: dateFrom, $lte: dateTo },
+      },
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "categoryId",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $unwind: "$category",
+    },
+  ]);
 
   // Generate report points
   const report = [];
@@ -262,18 +277,19 @@ const getCashFlowReport = async (
       (t) => t.createdAt >= chunkStart0 && t.createdAt <= chunkEnd23
     );
 
-    // Calculate income and expense
+    // Calculate income and expense based on category type
     let income = 0;
     let expense = 0;
     let balanceChange = 0;
 
     for (const tx of chunkTransactions) {
-      if (tx.amount > 0) {
+      if (tx.category.type === "income") {
         income += tx.amount;
-      } else {
-        expense += Math.abs(tx.amount);
+        balanceChange += tx.amount;
+      } else if (tx.category.type === "expense") {
+        expense += tx.amount;
+        balanceChange -= tx.amount;
       }
-      balanceChange += tx.amount;
     }
 
     currentBalance += balanceChange;
