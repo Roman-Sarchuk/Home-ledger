@@ -15,23 +15,32 @@ const DEFAULT_SYSTEM_CATEGORIES = [
   { name: "Expense", type: "expense", icon: "💸" },
 ];
 
-const CategorySchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  name: { type: String, required: true },
-  type: { type: String, enum: ALLOWED_TYPES, required: true },
-  icon: {
-    type: String,
-    required: true,
-    trim: true,
-    maxlength: CATEGORY_ICON_MAX_LENGTH,
-    validate: {
-      validator: (value) => EMOJI_REGEX.test(value),
-      message: "Category icon must be a valid emoji",
+const CategorySchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
+    name: { type: String, required: true },
+    type: { type: String, enum: ALLOWED_TYPES, required: true },
+    icon: {
+      type: String,
+      required: true,
+      trim: true,
+      maxlength: CATEGORY_ICON_MAX_LENGTH,
+      validate: {
+        validator: (value) => EMOJI_REGEX.test(value),
+        message: "Category icon must be a valid emoji",
+      },
+    },
+    isSystem: { type: Boolean, default: false },
   },
-  isSystem: { type: Boolean, default: false },
-  createdAt: { type: Date, default: Date.now },
-});
+  {
+    timestamps: true,
+    versionKey: false,
+  },
+);
 
 CategorySchema.index({ userId: 1, name: 1, type: 1 }, { unique: true });
 

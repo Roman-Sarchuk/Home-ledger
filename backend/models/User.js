@@ -1,26 +1,31 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema(
+  {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },
-    passwordHash: { type: String, required: true }, 
-    createdAt: { type: Date, default: Date.now }
-});
+    passwordHash: { type: String, required: true },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  },
+);
 
-UserSchema.methods.getId = function() {
-    return this._id.toString();
+UserSchema.methods.getId = function () {
+  return this._id.toString();
 };
 
-UserSchema.methods.checkPassword = function(password) {
-    return bcrypt.compare(password, this.passwordHash);
-}
-
-UserSchema.methods.toPublicJSON = function() {
-    return {
-        name: this.name,
-        email: this.email,
-    };
+UserSchema.methods.checkPassword = function (password) {
+  return bcrypt.compare(password, this.passwordHash);
 };
 
-module.exports = mongoose.model('User', UserSchema);
+UserSchema.methods.toPublicJSON = function () {
+  return {
+    name: this.name,
+    email: this.email,
+  };
+};
+
+module.exports = mongoose.model("User", UserSchema);
