@@ -64,7 +64,7 @@ const getSummaryCategoriesReport = async (
   dateToStr,
 ) => {
   // Validate required parameters
-  if (!accountId || !dateFrom || !dateTo) {
+  if (!accountId || !dateFromStr || !dateToStr) {
     throw new APIError(
       400,
       "Incorrect parameters",
@@ -163,7 +163,7 @@ const getLiquidityCurveReport = async (
   pointLimit,
 ) => {
   // Validate required parameters
-  if (!accountId || !dateFrom || !dateTo || !pointLimit) {
+  if (!accountId || !dateFromStr || !dateToStr || !pointLimit) {
     throw new APIError(
       400,
       "Incorrect parameters",
@@ -244,7 +244,7 @@ const getCashFlowReport = async (
   pointLimit,
 ) => {
   // Validate required parameters
-  if (!accountId || !dateFrom || !dateTo || !pointLimit) {
+  if (!accountId || !dateFromStr || !dateToStr || !pointLimit) {
     throw new APIError(
       400,
       "Incorrect parameters",
