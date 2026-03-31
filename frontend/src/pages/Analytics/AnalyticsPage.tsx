@@ -116,8 +116,8 @@ export function AnalyticsPage() {
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,320px)_1fr] lg:items-start">
-      <Card className="lg:sticky lg:top-20">
+    <div className="page lg:grid-cols-[minmax(0,320px)_1fr] lg:items-start">
+      <Card className="lg:sticky lg:top-24">
         <CardHeader>
           <CardTitle>Аналітика</CardTitle>
           <CardDescription>Оберіть звіт, рахунок і період</CardDescription>
@@ -203,7 +203,7 @@ export function AnalyticsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="max-h-[min(70vh,720px)] overflow-auto rounded-lg ring-1 ring-foreground/10">
+            <div className="surface max-h-[min(70vh,720px)] overflow-auto rounded-xl">
               <div className="min-w-[min(100%,640px)] p-4">
                 {!applied ? (
                   <p className="text-sm text-muted-foreground">

@@ -42,8 +42,8 @@ export function LoginPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-md px-4 py-10">
-      <Card>
+    <div className="auth-shell">
+      <Card className="auth-card">
         <CardHeader>
           <CardTitle>Login</CardTitle>
           <CardDescription>Sign in to your account</CardDescription>

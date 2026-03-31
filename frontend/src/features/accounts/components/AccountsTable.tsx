@@ -56,7 +56,7 @@ export function AccountsTable({ accounts, isLoading, limit, onAddNew }: Props) {
         + Add new account
       </Button>
 
-      <div className="rounded-xl ring-1 ring-foreground/10">
+      <div className="surface">
         <Table>
           <TableHeader>
             <TableRow>

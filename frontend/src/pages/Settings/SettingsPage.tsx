@@ -113,10 +113,10 @@ export function SettingsPage() {
   const canDelete = deleteForm.watch("confirmName").trim() === (user?.name?.trim() ?? "");
 
   return (
-    <div className="mx-auto grid w-full max-w-3xl gap-6">
+    <div className="page mx-auto w-full max-w-3xl">
       <div>
-        <h1 className="font-heading text-2xl font-semibold">Settings</h1>
-        <p className="text-sm text-muted-foreground">Manage your profile and appearance preferences</p>
+        <h1 className="page-title">Settings</h1>
+        <p className="page-subtitle">Manage your profile and appearance preferences</p>
       </div>
 
       <Card>

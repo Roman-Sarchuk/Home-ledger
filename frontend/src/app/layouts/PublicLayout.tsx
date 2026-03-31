@@ -11,7 +11,7 @@ export function PublicLayout() {
   }
 
   return (
-    <div className="min-h-dvh">
+    <div className="app-shell">
       <Outlet />
     </div>
   );

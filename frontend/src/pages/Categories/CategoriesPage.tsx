@@ -30,14 +30,14 @@ export function CategoriesPage() {
   }
 
   return (
-    <div className="grid gap-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="page">
+      <div className="page-header">
         <div>
-          <h1 className="font-heading text-2xl font-semibold">Categories</h1>
-          <p className="text-sm text-muted-foreground">Income and expense buckets</p>
+          <h1 className="page-title">Categories</h1>
+          <p className="page-subtitle">Income and expense buckets</p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="surface flex items-center gap-2 px-2 py-1.5">
           <Button variant="outline" disabled={!canPrev} onClick={() => setPage(page - 1)}>
             Prev
           </Button>

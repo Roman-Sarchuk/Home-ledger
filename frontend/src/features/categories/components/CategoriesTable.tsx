@@ -54,7 +54,7 @@ export function CategoriesTable({ categories, isLoading, limit, onAddNew }: Prop
         + Add new category
       </Button>
 
-      <div className="rounded-xl ring-1 ring-foreground/10">
+      <div className="surface">
         <Table>
           <TableHeader>
             <TableRow>

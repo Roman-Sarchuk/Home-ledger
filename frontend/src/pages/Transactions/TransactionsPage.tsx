@@ -94,11 +94,11 @@ export function TransactionsPage() {
   }
 
   return (
-    <div className="grid gap-4">
-      <div className="flex flex-wrap items-start justify-between gap-3">
+    <div className="page">
+      <div className="page-header items-start">
         <div>
-          <h1 className="font-heading text-2xl font-semibold">Transactions</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="page-title">Transactions</h1>
+          <p className="page-subtitle">
             {accountId ? "Filtered by account" : "All transactions"}
           </p>
         </div>
@@ -117,7 +117,7 @@ export function TransactionsPage() {
         </div>
       </div>
 
-      <div className="rounded-xl ring-1 ring-foreground/10">
+      <div className="surface">
         <Table>
           <TableHeader>
             <TableRow>
@@ -222,7 +222,7 @@ export function TransactionsPage() {
         <Button
           variant="outline"
           size="icon"
-          className="fixed bottom-6 right-6 rounded-full shadow-lg"
+          className="fixed bottom-6 right-6 rounded-full bg-card/90 shadow-lg backdrop-blur"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           aria-label="Back to top"
         >

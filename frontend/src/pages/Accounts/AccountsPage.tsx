@@ -30,14 +30,14 @@ export function AccountsPage() {
   }
 
   return (
-    <div className="grid gap-6">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="page">
+      <div className="page-header">
         <div>
-          <h1 className="font-heading text-2xl font-semibold">Accounts</h1>
-          <p className="text-sm text-muted-foreground">Your money containers and balances</p>
+          <h1 className="page-title">Accounts</h1>
+          <p className="page-subtitle">Your money containers and balances</p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="surface flex items-center gap-2 px-2 py-1.5">
           <Button variant="outline" disabled={!canPrev} onClick={() => setPage(page - 1)}>
             Prev
           </Button>

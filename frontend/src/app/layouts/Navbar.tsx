@@ -37,21 +37,23 @@ export function Navbar() {
 
   const linkClassName = ({ isActive }: { isActive: boolean }) =>
     cn(
-      "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
-      isActive ? "bg-accent text-accent-foreground" : "text-muted-foreground",
+      "rounded-full px-3.5 py-1.5 text-sm font-medium transition-all",
+      isActive
+        ? "bg-primary text-primary-foreground shadow-[0_8px_20px_-12px_var(--color-ring)]"
+        : "text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground",
     );
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
-      <div className="mx-auto flex h-14 w-full max-w-6xl items-center justify-between gap-3 px-4">
-        <Link to="/accounts" className="flex items-center gap-2">
-          <span className="inline-flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+    <header className="sticky top-0 z-40 border-b border-white/40 bg-background/72 backdrop-blur-md">
+      <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-3 px-4 md:px-6">
+        <Link to="/accounts" className="flex items-center gap-2.5">
+          <span className="inline-flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-[0_10px_24px_-16px_var(--color-ring)]">
             <Wallet className="size-5" />
           </span>
-          <span className="hidden text-sm font-semibold sm:inline">Home-ledger</span>
+          <span className="hidden text-sm font-semibold tracking-wide sm:inline">Home-ledger</span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-1 rounded-full border border-border/80 bg-card/70 p-1 md:flex">
           {navItems.map((item) => (
             <NavLink key={item.to} to={item.to} className={linkClassName} end>
               {item.label}
@@ -62,7 +64,7 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="hidden md:inline-flex">
+              <Button variant="outline" className="hidden rounded-full md:inline-flex">
                 {userLabel}
               </Button>
             </DropdownMenuTrigger>
@@ -91,11 +93,11 @@ export function Navbar() {
 
           <Dialog open={mobileOpen} onOpenChange={setMobileOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden" aria-label="Open menu">
+              <Button variant="outline" size="icon" className="rounded-full md:hidden" aria-label="Open menu">
                 <Menu className="size-5" />
               </Button>
             </DialogTrigger>
-            <DialogContent className="p-0">
+            <DialogContent className="surface p-0">
               <DialogHeader className="px-4 pt-4">
                 <DialogTitle>Menu</DialogTitle>
               </DialogHeader>
@@ -104,7 +106,7 @@ export function Navbar() {
                   <Button
                     key={item.to}
                     variant="ghost"
-                    className="justify-start"
+                    className="justify-start rounded-xl"
                     onClick={() => {
                       setMobileOpen(false);
                       navigate(item.to);
@@ -118,7 +120,7 @@ export function Navbar() {
 
                 <Button
                   variant="ghost"
-                  className="justify-start"
+                  className="justify-start rounded-xl"
                   onClick={() => {
                     setMobileOpen(false);
                     navigate("/settings");
@@ -130,7 +132,7 @@ export function Navbar() {
 
                 <Button
                   variant="ghost"
-                  className="justify-start text-destructive hover:text-destructive"
+                  className="justify-start rounded-xl text-destructive hover:text-destructive"
                   onClick={() => {
                     setMobileOpen(false);
                     logout();
