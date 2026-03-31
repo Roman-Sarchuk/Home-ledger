@@ -4,16 +4,43 @@ const Transaction = require("../models/Transaction");
 const { Category } = require("../models/Category");
 const APIError = require("../utils/APIError");
 
+const parseDateOnly = (dateStr) => {
+  const match = /^\d{4}-\d{2}-\d{2}$/.exec(dateStr);
+  if (!match) {
+    return null;
+  }
+
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const parsed = new Date(year, month - 1, day);
+
+  if (
+    parsed.getFullYear() !== year ||
+    parsed.getMonth() !== month - 1 ||
+    parsed.getDate() !== day
+  ) {
+    return null;
+  }
+
+  return parsed;
+};
+
+const formatDateOnly = (date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 const validateDateRange = (dateFromStr, dateToStr) => {
-  const dateFrom = new Date(dateFromStr);
-  dateFrom.setHours(0, 0, 0, 0);
+  const dateFrom = parseDateOnly(dateFromStr);
+  const dateTo = parseDateOnly(dateToStr);
 
-  const dateTo = new Date(dateToStr);
-  dateTo.setHours(23, 59, 59, 999);
-
-  if (isNaN(dateFrom.getTime()) || isNaN(dateTo.getTime())) {
+  if (!dateFrom || !dateTo) {
     throw new APIError(400, "Incorrect parameters", "Invalid date format");
   }
+
+  dateFrom.setHours(0, 0, 0, 0);
+  dateTo.setHours(23, 59, 59, 999);
 
   if (dateTo < dateFrom) {
     throw new APIError(
@@ -232,7 +259,7 @@ const getLiquidityCurveReport = async (
       transactionIndex++;
     }
 
-    const dateStr = pointDate.toISOString().split("T")[0];
+    const dateStr = formatDateOnly(pointDate);
     report.push({
       date: dateStr,
       total: currentBalance,
@@ -342,8 +369,8 @@ const getCashFlowReport = async (
 
     currentBalance += balanceChange;
 
-    const chunkStartStr = chunkStart0.toISOString().split("T")[0];
-    const chunkEndStr = chunkEnd23.toISOString().split("T")[0];
+    const chunkStartStr = formatDateOnly(chunkStart0);
+    const chunkEndStr = formatDateOnly(chunkEnd23);
 
     report.push({
       dateFrom: chunkStartStr,

@@ -370,6 +370,10 @@ describe("Reports API", () => {
         expect(point.date).toMatch(/^\d{4}-\d{2}-\d{2}$/); // YYYY-MM-DD format
       }
 
+      // Ensure boundaries are preserved without timezone date shifting
+      expect(res.body.report[0].date).toEqual("2024-01-01");
+      expect(res.body.report[res.body.report.length - 1].date).toEqual("2024-01-31");
+
       // Verify running totals are correct
       expect(res.body.report[0].total).toEqual(0); // Start date, before first tx
       expect(res.body.report[res.body.report.length - 1].total).toEqual(450); // End date
@@ -738,6 +742,10 @@ describe("Reports API", () => {
       const report = res.body.report;
       expect(report[0].balanceAfter).toEqual(800); // First period net
       expect(report[1].balanceAfter).toEqual(1000); // Running total
+
+      // Ensure period boundaries are preserved without timezone date shifting
+      expect(report[0].dateFrom).toEqual("2024-01-01");
+      expect(report[report.length - 1].dateTo).toEqual("2024-01-31");
     });
   });
 
