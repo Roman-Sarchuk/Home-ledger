@@ -1,34 +1,81 @@
-const Transaction = require('../models/Transaction');
-const Account = require('../models/Account');
+const transactionService = require("../services/transactionService");
+const { parseCursorPagination } = require("../utils/parsePagination");
 
 exports.getTransactions = async (req, res) => {
-    const transactions = await Transaction.find({ userId: req.user.id })
-        .populate('accountId', 'name')
-        .populate('categoryId', 'name type')
-        .sort({ createdAt: -1 });
-    res.json(transactions);
+  // Get user input
+  const userId = req.user.id;
+  const cursorPagination = parseCursorPagination(
+    req.query.nextCursor,
+    req.query.limit
+  );
+
+  // Perform logic
+  const result = await transactionService.getTransactions(
+    userId,
+    cursorPagination
+  );
+
+  // Send response
+  res.status(200).json(result);
+};
+
+exports.getTransactionById = async (req, res) => {
+  // Get user input
+  const userId = req.user.id;
+  const { id } = req.params;
+
+  // Perform logic
+  const result = await transactionService.getTransactionById(userId, id);
+
+  // Send response
+  res.status(200).json(result);
 };
 
 exports.createTransaction = async (req, res) => {
-    const { accountId, amount, categoryId, type } = req.body; // type: income/expense
-    
-    const transaction = new Transaction({ ...req.body, userId: req.user.id });
-    await transaction.save();
+  // Get user input
+  const userId = req.user.id;
+  const { accountId, categoryId, amount, description } = req.body;
 
-    // Оновлення балансу рахунку
-    const change = type === 'income' ? amount : -amount;
-    await Account.findByIdAndUpdate(accountId, { $inc: { balance: change } });
+  // Perform logic
+  const result = await transactionService.createTransaction(
+    userId,
+    accountId,
+    categoryId,
+    amount,
+    description
+  );
 
-    res.json(transaction);
+  // Send response
+  res.status(201).json(result);
+};
+
+exports.updateTransaction = async (req, res) => {
+  // Get user input
+  const userId = req.user.id;
+  const { id } = req.params;
+  const { categoryId, amount, description } = req.body;
+
+  // Perform logic
+  const result = await transactionService.updateTransaction(
+    userId,
+    id,
+    categoryId,
+    amount,
+    description
+  );
+
+  // Send response
+  res.status(200).json(result);
 };
 
 exports.deleteTransaction = async (req, res) => {
-    const transaction = await Transaction.findOne({ _id: req.params.id, userId: req.user.id });
-    if (!transaction) return res.status(404).json({ msg: 'Транзакція не знайдена' });
+  // Get user input
+  const userId = req.user.id;
+  const { id } = req.params;
 
-    // Повертаємо баланс назад перед видаленням
-    await Account.findByIdAndUpdate(transaction.accountId, { $inc: { balance: -transaction.amount } });
-    await Transaction.findByIdAndDelete(req.params.id);
+  // Perform logic
+  const resultCode = await transactionService.deleteTransaction(userId, id);
 
-    res.json({ msg: 'Транзакцію видалено' });
+  // Send response
+  res.status(resultCode).send();
 };
