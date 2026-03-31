@@ -16,7 +16,7 @@ const validateDateRange = (dateFromStr, dateToStr) => {
     throw new APIError(
       400,
       "Incorrect parameters",
-      "dateTo must be later than or equal to dateFrom"
+      "dateTo must be later than or equal to dateFrom",
     );
   }
 
@@ -25,7 +25,11 @@ const validateDateRange = (dateFromStr, dateToStr) => {
 
 const validateAccountAccess = async (userId, accountId) => {
   if (!mongoose.Types.ObjectId.isValid(accountId)) {
-    throw new APIError(400, "Incorrect parameters", "Invalid account ID format");
+    throw new APIError(
+      400,
+      "Incorrect parameters",
+      "Invalid account ID format",
+    );
   }
 
   const account = await Account.findOne({ _id: accountId, userId });
@@ -46,14 +50,28 @@ const validatePointLimit = (pointLimit) => {
     throw new APIError(
       400,
       "Incorrect parameters",
-      "pointLimit must be an integer between 2 and 365"
+      "pointLimit must be an integer between 2 and 365",
     );
   }
 
   return limit;
 };
 
-const getSummaryCategoriesReport = async (userId, accountId, dateFromStr, dateToStr) => {
+const getSummaryCategoriesReport = async (
+  userId,
+  accountId,
+  dateFromStr,
+  dateToStr,
+) => {
+  // Validate required parameters
+  if (!accountId || !dateFrom || !dateTo) {
+    throw new APIError(
+      400,
+      "Incorrect parameters",
+      "accountId, dateFrom, and dateTo are required",
+    );
+  }
+
   const { dateFrom, dateTo } = validateDateRange(dateFromStr, dateToStr);
   await validateAccountAccess(userId, accountId);
 
@@ -104,8 +122,14 @@ const getSummaryCategoriesReport = async (userId, accountId, dateFromStr, dateTo
   ]);
 
   // Process results to add percentages and format response
-  const income = result.find((r) => r._id === "income") || { total: 0, categories: [] };
-  const expense = result.find((r) => r._id === "expense") || { total: 0, categories: [] };
+  const income = result.find((r) => r._id === "income") || {
+    total: 0,
+    categories: [],
+  };
+  const expense = result.find((r) => r._id === "expense") || {
+    total: 0,
+    categories: [],
+  };
 
   const formatCategoryData = (categories, total) => {
     return categories.map((cat) => ({
@@ -136,8 +160,17 @@ const getLiquidityCurveReport = async (
   accountId,
   dateFromStr,
   dateToStr,
-  pointLimit
+  pointLimit,
 ) => {
+  // Validate required parameters
+  if (!accountId || !dateFrom || !dateTo || !pointLimit) {
+    throw new APIError(
+      400,
+      "Incorrect parameters",
+      "accountId, dateFrom, dateTo, and pointLimit are required",
+    );
+  }
+
   const { dateFrom, dateTo } = validateDateRange(dateFromStr, dateToStr);
   await validateAccountAccess(userId, accountId);
   const limit = validatePointLimit(pointLimit);
@@ -208,8 +241,17 @@ const getCashFlowReport = async (
   accountId,
   dateFromStr,
   dateToStr,
-  pointLimit
+  pointLimit,
 ) => {
+  // Validate required parameters
+  if (!accountId || !dateFrom || !dateTo || !pointLimit) {
+    throw new APIError(
+      400,
+      "Incorrect parameters",
+      "accountId, dateFrom, dateTo, and pointLimit are required",
+    );
+  }
+
   const { dateFrom, dateTo } = validateDateRange(dateFromStr, dateToStr);
   await validateAccountAccess(userId, accountId);
   const limit = validatePointLimit(pointLimit);
@@ -274,7 +316,7 @@ const getCashFlowReport = async (
 
     // Filter transactions in this chunk
     const chunkTransactions = transactions.filter(
-      (t) => t.createdAt >= chunkStart0 && t.createdAt <= chunkEnd23
+      (t) => t.createdAt >= chunkStart0 && t.createdAt <= chunkEnd23,
     );
 
     // Calculate income and expense based on category type
