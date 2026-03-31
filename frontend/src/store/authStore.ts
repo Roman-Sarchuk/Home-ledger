@@ -21,6 +21,7 @@ type AuthState = {
   hydrateFromStorage: () => void;
   setRememberMe: (rememberMe: boolean) => void;
   loginSuccess: (payload: PersistedAuth, rememberMe: boolean) => void;
+  updateUser: (user: AuthUser) => void;
   logout: () => void;
 };
 
@@ -76,6 +77,17 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 
     if (rememberMe) writePersistedAuth(payload);
     else writePersistedAuth(null);
+  },
+
+  updateUser: (user) => {
+    const state = get();
+    if (!state.token) return;
+
+    set({ user });
+
+    if (state.rememberMe) {
+      writePersistedAuth({ user, token: state.token });
+    }
   },
 
   logout: () => {
