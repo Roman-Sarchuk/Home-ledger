@@ -28,10 +28,10 @@ exports.getCategoryById = async (req, res) => {
 exports.createCategory = async (req, res) => {
   // Get user input
   const userId = req.user.id;
-  const { name, type } = req.body;
+  const { name, type, icon } = req.body;
 
   // Perform logic
-  const result = await categoryService.createCategory(userId, name, type);
+  const result = await categoryService.createCategory(userId, name, type, icon);
 
   // Send response
   res.status(201).json(result);
@@ -41,10 +41,10 @@ exports.updateCategory = async (req, res) => {
   // Get user input
   const userId = req.user.id;
   const { id } = req.params;
-  const { name, type } = req.body;
+  const { name, type, icon } = req.body;
 
   // Perform logic
-  const result = await categoryService.updateCategory(userId, id, name, type);
+  const result = await categoryService.updateCategory(userId, id, name, type, icon);
 
   // Send response
   res.status(200).json(result);

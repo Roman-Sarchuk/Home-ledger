@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Category, ALLOWED_TYPES } = require("../models/Category");
+const { Category, ALLOWED_TYPES, EMOJI_REGEX } = require("../models/Category");
 const Transaction = require("../models/Transaction");
 const APIError = require("../utils/APIError");
 
@@ -7,6 +7,24 @@ const validateCategoryType = (type) => {
   if (!ALLOWED_TYPES.includes(type)) {
     throw new APIError(400, "Incorrect parameters", "Invalid category type");
   }
+};
+
+const validateCategoryIcon = (icon) => {
+  if (!icon || icon.trim() === "") {
+    throw new APIError(400, "Incorrect parameters", "Category icon is required");
+  }
+
+  if (!EMOJI_REGEX.test(icon.trim())) {
+    throw new APIError(400, "Incorrect parameters", "Invalid category icon");
+  }
+};
+
+const throwBadRequestOnValidationError = (error) => {
+  if (error && error.name === "ValidationError") {
+    throw new APIError(400, "Incorrect parameters", error.message);
+  }
+
+  throw error;
 };
 
 const getCategories = async (userId, pagePagination = {}) => {
@@ -39,34 +57,42 @@ const getCategoryById = async (userId, categoryId) => {
   };
 };
 
-const createCategory = async (userId, name, type) => {
-  if (!name || name.trim() === "" || !type) {
+const createCategory = async (userId, name, type, icon) => {
+  if (!name || name.trim() === "" || !type || !icon) {
     throw new APIError(
       400,
       "Incorrect parameters",
-      "Missing category name or invalid type",
+      "Missing category name, icon or invalid type",
     );
   }
 
   validateCategoryType(type);
+  validateCategoryIcon(icon);
 
   const existingCategory = await Category.findOne({ userId, name });
   if (existingCategory) {
     throw new APIError(409, "Category with this name already exists for user");
   }
 
-  const category = await Category.create({
-    userId,
-    name,
-    type,
-  });
+  let category;
+
+  try {
+    category = await Category.create({
+      userId,
+      name,
+      type,
+      icon: icon.trim(),
+    });
+  } catch (error) {
+    throwBadRequestOnValidationError(error);
+  }
 
   return {
     category: category.toPublicJSON(),
   };
 };
 
-const updateCategory = async (userId, categoryId, name, type) => {
+const updateCategory = async (userId, categoryId, name, type, icon) => {
   if (categoryId === undefined) {
     throw new APIError(400, "Incorrect parameters", "Category ID is required");
   }
@@ -104,7 +130,18 @@ const updateCategory = async (userId, categoryId, name, type) => {
     category.type = type;
   }
 
-  const updatedCategory = await category.save();
+  if (icon !== undefined && icon !== category.icon) {
+    validateCategoryIcon(icon);
+    category.icon = icon.trim();
+  }
+
+  let updatedCategory;
+
+  try {
+    updatedCategory = await category.save();
+  } catch (error) {
+    throwBadRequestOnValidationError(error);
+  }
 
   return {
     category: updatedCategory.toPublicJSON(),

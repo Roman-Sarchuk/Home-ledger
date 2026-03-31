@@ -44,18 +44,21 @@ describe("Category API", () => {
       postRes = await request(app).post("/api/v1/categories").set("Authorization", token).send({
         name: "Food",
         type: "expense",
+        icon: "🍔",
       });
       expect(postRes.statusCode).toEqual(201);
 
       postRes = await request(app).post("/api/v1/categories").set("Authorization", token).send({
         name: "Salary",
         type: "income",
+        icon: "💼",
       });
       expect(postRes.statusCode).toEqual(201);
 
       postRes = await request(app).post("/api/v1/categories").set("Authorization", token).send({
         name: "Transport",
         type: "expense",
+        icon: "🚌",
       });
       expect(postRes.statusCode).toEqual(201);
 
@@ -70,6 +73,7 @@ describe("Category API", () => {
       expect(res.body.categories[0]).toHaveProperty("id");
       expect(res.body.categories[0]).toHaveProperty("name");
       expect(res.body.categories[0]).toHaveProperty("type");
+      expect(res.body.categories[0]).toHaveProperty("icon");
     });
 
     it("should return 400 for invalid pagination", async () => {
@@ -102,6 +106,7 @@ describe("Category API", () => {
         .send({
           name: "Food",
           type: "expense",
+          icon: "🍔",
         });
 
       const categoryId = createRes.body.category.id;
@@ -115,6 +120,7 @@ describe("Category API", () => {
       expect(res.body.category).toHaveProperty("id", categoryId);
       expect(res.body.category).toHaveProperty("name", "Food");
       expect(res.body.category).toHaveProperty("type", "expense");
+      expect(res.body.category).toHaveProperty("icon", "🍔");
     });
 
     it("should return 404 when category not found", async () => {
@@ -140,12 +146,14 @@ describe("Category API", () => {
         .send({
           name: "Bonus",
           type: "income",
+          icon: "🎁",
         });
 
       expect(res.statusCode).toEqual(201);
       expect(res.body).toHaveProperty("category");
       expect(res.body.category).toHaveProperty("name", "Bonus");
       expect(res.body.category).toHaveProperty("type", "income");
+      expect(res.body.category).toHaveProperty("icon", "🎁");
     });
 
     it("should return 400 for invalid type", async () => {
@@ -157,6 +165,7 @@ describe("Category API", () => {
         .send({
           name: "Crypto",
           type: "other",
+          icon: "🪙",
         });
 
       expect(res.statusCode).toEqual(400);
@@ -170,6 +179,7 @@ describe("Category API", () => {
       await request(app).post("/api/v1/categories").set("Authorization", token).send({
         name: "Food",
         type: "expense",
+        icon: "🍔",
       });
 
       const res = await request(app)
@@ -178,10 +188,28 @@ describe("Category API", () => {
         .send({
           name: "Food",
           type: "income",
+          icon: "🥗",
         });
 
       expect(res.statusCode).toEqual(409);
       expect(res.body).toHaveProperty("detail", "Category with this name already exists for user");
+    });
+
+    it("should return 400 for invalid icon", async () => {
+      const { token } = await registerUserAndGetToken();
+
+      const res = await request(app)
+        .post("/api/v1/categories")
+        .set("Authorization", token)
+        .send({
+          name: "Invalid Icon Category",
+          type: "expense",
+          icon: "not-an-emoji",
+        });
+
+      expect(res.statusCode).toEqual(400);
+      expect(res.body).toHaveProperty("detail", "Incorrect parameters");
+      expect(res.body).toHaveProperty("error", "Invalid category icon");
     });
   });
 
@@ -192,19 +220,20 @@ describe("Category API", () => {
       const createRes = await request(app)
         .post("/api/v1/categories")
         .set("Authorization", token)
-        .send({ name: "Primary", type: "expense" });
+        .send({ name: "Primary", type: "expense", icon: "📦" });
 
       const categoryId = createRes.body.category.id;
 
       const res = await request(app)
         .patch(`/api/v1/categories/${categoryId}`)
         .set("Authorization", token)
-        .send({ name: "Primary Updated", type: "income" });
+        .send({ name: "Primary Updated", type: "income", icon: "💡" });
 
       expect(res.statusCode).toEqual(200);
       expect(res.body.category).toHaveProperty("id", categoryId);
       expect(res.body.category).toHaveProperty("name", "Primary Updated");
       expect(res.body.category).toHaveProperty("type", "income");
+      expect(res.body.category).toHaveProperty("icon", "💡");
     });
 
     it("should return 409 when updating to duplicate name", async () => {
@@ -213,11 +242,12 @@ describe("Category API", () => {
       const first = await request(app)
         .post("/api/v1/categories")
         .set("Authorization", token)
-        .send({ name: "First", type: "expense" });
+        .send({ name: "First", type: "expense", icon: "1️⃣" });
 
       await request(app).post("/api/v1/categories").set("Authorization", token).send({
         name: "Second",
         type: "income",
+        icon: "2️⃣",
       });
 
       const res = await request(app)
@@ -235,7 +265,7 @@ describe("Category API", () => {
       const createRes = await request(app)
         .post("/api/v1/categories")
         .set("Authorization", token)
-        .send({ name: "Editable", type: "expense" });
+        .send({ name: "Editable", type: "expense", icon: "✏️" });
 
       const res = await request(app)
         .patch(`/api/v1/categories/${createRes.body.category.id}`)
@@ -245,6 +275,24 @@ describe("Category API", () => {
       expect(res.statusCode).toEqual(400);
       expect(res.body).toHaveProperty("detail", "Incorrect parameters");
       expect(res.body).toHaveProperty("error", "Invalid category type");
+    });
+
+    it("should return 400 for invalid icon on update", async () => {
+      const { token } = await registerUserAndGetToken();
+
+      const createRes = await request(app)
+        .post("/api/v1/categories")
+        .set("Authorization", token)
+        .send({ name: "Editable Icon", type: "expense", icon: "🛒" });
+
+      const res = await request(app)
+        .patch(`/api/v1/categories/${createRes.body.category.id}`)
+        .set("Authorization", token)
+        .send({ icon: "plain-text" });
+
+      expect(res.statusCode).toEqual(400);
+      expect(res.body).toHaveProperty("detail", "Incorrect parameters");
+      expect(res.body).toHaveProperty("error", "Invalid category icon");
     });
 
     it("should return 404 when updating non-existing category", async () => {
@@ -299,6 +347,7 @@ describe("Category API", () => {
         .send({
           name: "To Delete",
           type: "expense",
+          icon: "🧾",
         });
 
       const categoryId = categoryRes.body.category.id;

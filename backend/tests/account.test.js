@@ -266,6 +266,7 @@ describe("Account API", () => {
         userId: accountDoc.userId,
         name: "Food",
         type: "expense",
+        icon: "🍔",
       });
 
       await Transaction.create({

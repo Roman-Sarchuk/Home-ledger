@@ -50,9 +50,11 @@ describe("Auth API", () => {
       expect(systemCategories).toHaveLength(2);
       expect(systemCategories[0]).toHaveProperty("name", "Expense");
       expect(systemCategories[0]).toHaveProperty("type", "expense");
+      expect(systemCategories[0]).toHaveProperty("icon", "💸");
       expect(systemCategories[0]).toHaveProperty("isSystem", true);
       expect(systemCategories[1]).toHaveProperty("name", "Income");
       expect(systemCategories[1]).toHaveProperty("type", "income");
+      expect(systemCategories[1]).toHaveProperty("icon", "💰");
       expect(systemCategories[1]).toHaveProperty("isSystem", true);
     });
 
