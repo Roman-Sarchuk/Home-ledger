@@ -6,7 +6,10 @@ const APIError = require("../utils/APIError");
 
 const validateDateRange = (dateFromStr, dateToStr) => {
   const dateFrom = new Date(dateFromStr);
+  dateFrom.setHours(0, 0, 0, 0);
+
   const dateTo = new Date(dateToStr);
+  dateTo.setHours(23, 59, 59, 999);
 
   if (isNaN(dateFrom.getTime()) || isNaN(dateTo.getTime())) {
     throw new APIError(400, "Incorrect parameters", "Invalid date format");
@@ -92,7 +95,10 @@ const getSummaryCategoriesReport = async (
       },
     },
     {
-      $unwind: "$category",
+      $unwind: {
+        path: "$category",
+        preserveNullAndEmptyArrays: true,
+      },
     },
     {
       $group: {
