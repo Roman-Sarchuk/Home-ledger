@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller } from "react-hook-form";
 import { useForm } from "react-hook-form";
+import { ArrowLeft } from "lucide-react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -48,9 +49,9 @@ export function LoginPage() {
           <CardTitle>Login</CardTitle>
           <CardDescription>Sign in to your account</CardDescription>
         </CardHeader>
-        <CardContent>
-          <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="grid gap-2">
+        <CardContent className="space-y-1">
+          <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid gap-3">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
@@ -64,7 +65,7 @@ export function LoginPage() {
               ) : null}
             </div>
 
-            <div className="grid gap-2">
+            <div className="grid gap-3">
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
@@ -82,7 +83,7 @@ export function LoginPage() {
               control={form.control}
               name="rememberMe"
               render={({ field }) => (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5 rounded-lg border border-border/70 bg-muted/35 px-3 py-2">
                   <Checkbox
                     id="rememberMe"
                     checked={field.value}
@@ -94,9 +95,17 @@ export function LoginPage() {
               )}
             />
 
-            <Button type="submit" disabled={loginMutation.isPending}>
-              {loginMutation.isPending ? "Signing in…" : "Sign in"}
-            </Button>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <Button type="button" variant="outline" asChild>
+                <Link to="/">
+                  <ArrowLeft className="mr-2 size-4" />
+                  Back to home
+                </Link>
+              </Button>
+              <Button type="submit" disabled={loginMutation.isPending}>
+                {loginMutation.isPending ? "Signing in…" : "Sign in"}
+              </Button>
+            </div>
 
             <p className="text-sm text-muted-foreground">
               No account?{" "}

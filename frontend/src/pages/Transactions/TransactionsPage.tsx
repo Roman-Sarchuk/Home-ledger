@@ -117,7 +117,61 @@ export function TransactionsPage() {
         </div>
       </div>
 
-      <div className="surface">
+      <div className="surface md:hidden">
+        {txQuery.isLoading ? (
+          <div className="px-4 py-8 text-center text-sm text-muted-foreground">Loading…</div>
+        ) : allTransactions.length === 0 ? (
+          <div className="px-4 py-8 text-center text-sm text-muted-foreground">No transactions yet.</div>
+        ) : (
+          <div className="divide-y divide-border/70">
+            {allTransactions.map((tx) => {
+              const cat = categoriesById.get(tx.categoryId);
+              const signedAmount = getSignedAmount(tx.amount, cat?.type);
+              return (
+                <article key={tx.id} className="grid gap-3 px-4 py-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-medium text-foreground">
+                        {cat ? `${cat.icon} ${cat.name}` : tx.categoryId}
+                      </p>
+                      <p className="text-xs text-muted-foreground">{formatDate(tx.createdAt)}</p>
+                    </div>
+                    <p className="shrink-0 text-sm font-semibold tabular-nums text-foreground">
+                      {signedAmount.toFixed(2)}
+                    </p>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground">{tx.description || "No description"}</p>
+
+                  <div className="flex justify-end gap-2">
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => {
+                        setEditTx(tx);
+                        setEditOpen(true);
+                      }}
+                      aria-label="Edit transaction"
+                    >
+                      <Pencil className="size-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={() => void onDelete(tx)}
+                      aria-label="Delete transaction"
+                    >
+                      <Trash2 className="size-4" />
+                    </Button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      <div className="surface hidden md:block">
         <Table>
           <TableHeader>
             <TableRow>

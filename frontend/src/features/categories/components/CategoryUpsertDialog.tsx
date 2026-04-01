@@ -84,8 +84,8 @@ export function CategoryUpsertDialog(props: Props) {
           <DialogTitle>{isEdit ? "Edit category" : "New category"}</DialogTitle>
         </DialogHeader>
 
-        <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-2">
+        <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="grid gap-3">
             <Label htmlFor="category-name">Name</Label>
             <Input id="category-name" {...form.register("name")} aria-invalid={!!form.formState.errors.name} />
             {form.formState.errors.name?.message ? (
@@ -93,7 +93,7 @@ export function CategoryUpsertDialog(props: Props) {
             ) : null}
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-3">
             <Label>Type</Label>
             <Select
               value={form.watch("type")}
@@ -115,7 +115,7 @@ export function CategoryUpsertDialog(props: Props) {
             ) : null}
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-3">
             <Label htmlFor="category-icon">Icon (emoji)</Label>
             <Input id="category-icon" maxLength={8} {...form.register("icon")} aria-invalid={!!form.formState.errors.icon} />
             {form.formState.errors.icon?.message ? (

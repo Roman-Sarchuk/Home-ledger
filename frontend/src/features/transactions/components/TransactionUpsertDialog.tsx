@@ -160,8 +160,8 @@ export function TransactionUpsertDialog(props: Props) {
           <DialogTitle>{isEdit ? "Edit transaction" : "New transaction"}</DialogTitle>
         </DialogHeader>
 
-        <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-2">
+        <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="grid gap-3">
             <Label>Account</Label>
             <Select
               value={form.watch("accountId") ?? ""}
@@ -184,7 +184,7 @@ export function TransactionUpsertDialog(props: Props) {
             ) : null}
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-3">
             <Label>Category</Label>
             <Select
               value={form.watch("categoryId") ?? ""}
@@ -206,7 +206,7 @@ export function TransactionUpsertDialog(props: Props) {
             ) : null}
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-3">
             <Label htmlFor="amount">Amount</Label>
             <Input
               id="amount"
@@ -223,7 +223,7 @@ export function TransactionUpsertDialog(props: Props) {
             )}
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-3">
             <Label htmlFor="description">Description (optional)</Label>
             <Input id="description" {...form.register("description")} />
           </div>

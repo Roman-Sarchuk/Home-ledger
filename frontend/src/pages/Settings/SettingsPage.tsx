@@ -124,14 +124,14 @@ export function SettingsPage() {
           <CardTitle>Profile</CardTitle>
           <CardDescription>Your current account details</CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4">
-          <div className="grid gap-2">
+        <CardContent className="grid gap-5">
+          <div className="grid gap-3">
             <Label htmlFor="profile-email">Email</Label>
             <Input id="profile-email" value={user?.email ?? ""} disabled readOnly />
           </div>
 
-          <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="grid gap-2">
+          <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid gap-3">
               <Label htmlFor="profile-name">Name</Label>
               <Input
                 id="profile-name"
@@ -158,7 +158,7 @@ export function SettingsPage() {
           <CardTitle>Theme</CardTitle>
           <CardDescription>Choose how the app looks for you</CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-2">
+        <CardContent className="grid gap-3">
           <Label htmlFor="theme-mode">Color mode</Label>
           <Select value={selectedTheme} onValueChange={(value) => setTheme(value)}>
             <SelectTrigger id="theme-mode" className="w-full sm:w-56">
@@ -181,8 +181,8 @@ export function SettingsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="grid gap-4" onSubmit={deleteForm.handleSubmit(onDeleteSubmit)}>
-            <div className="grid gap-2">
+          <form className="grid gap-5" onSubmit={deleteForm.handleSubmit(onDeleteSubmit)}>
+            <div className="grid gap-3">
               <Label htmlFor="confirm-delete-name">Type your name to confirm</Label>
               <Input
                 id="confirm-delete-name"

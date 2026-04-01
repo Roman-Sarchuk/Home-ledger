@@ -122,8 +122,8 @@ export function AnalyticsPage() {
           <CardTitle>Аналітика</CardTitle>
           <CardDescription>Оберіть звіт, рахунок і період</CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4">
-          <div className="grid gap-2">
+        <CardContent className="grid gap-5">
+          <div className="grid gap-3">
             <Label>Тип звіту</Label>
             <Select
               value={reportKind}
@@ -143,7 +143,7 @@ export function AnalyticsPage() {
             </Select>
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-3">
             <Label>Рахунок</Label>
             <Select
               value={resolvedAccountId || undefined}
@@ -164,18 +164,18 @@ export function AnalyticsPage() {
             </Select>
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-3">
             <Label htmlFor="dateFrom">Від (дата)</Label>
             <Input id="dateFrom" type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-3">
             <Label htmlFor="dateTo">До (дата)</Label>
             <Input id="dateTo" type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
           </div>
 
           {reportKind !== "categories" ? (
-            <div className="grid gap-2">
+            <div className="grid gap-3">
               <Label htmlFor="pointLimit">Кількість точок (2–365)</Label>
               <Input
                 id="pointLimit"

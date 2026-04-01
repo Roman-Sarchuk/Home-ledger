@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+import { ArrowLeft } from "lucide-react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -48,19 +49,19 @@ export function RegisterPage() {
           <CardTitle>Create account</CardTitle>
           <CardDescription>Start tracking your finances</CardDescription>
         </CardHeader>
-        <CardContent>
-          <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="grid gap-2">
+        <CardContent className="space-y-1">
+          <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="grid gap-3">
               <Label htmlFor="name">Name</Label>
               <Input id="name" autoComplete="name" {...form.register("name")} />
             </div>
 
-            <div className="grid gap-2">
+            <div className="grid gap-3">
               <Label htmlFor="email">Email</Label>
               <Input id="email" type="email" autoComplete="email" {...form.register("email")} />
             </div>
 
-            <div className="grid gap-2">
+            <div className="grid gap-3">
               <Label htmlFor="password">Password</Label>
               <Input id="password" type="password" autoComplete="new-password" {...form.register("password")} />
             </div>
@@ -69,7 +70,7 @@ export function RegisterPage() {
               control={form.control}
               name="rememberMe"
               render={({ field }) => (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5 rounded-lg border border-border/70 bg-muted/35 px-3 py-2">
                   <Checkbox
                     id="rememberMe"
                     checked={field.value}
@@ -81,9 +82,17 @@ export function RegisterPage() {
               )}
             />
 
-            <Button type="submit" disabled={registerMutation.isPending}>
-              {registerMutation.isPending ? "Creating…" : "Create account"}
-            </Button>
+            <div className="grid gap-2 sm:grid-cols-2">
+              <Button type="button" variant="outline" asChild>
+                <Link to="/">
+                  <ArrowLeft className="mr-2 size-4" />
+                  Back to home
+                </Link>
+              </Button>
+              <Button type="submit" disabled={registerMutation.isPending}>
+                {registerMutation.isPending ? "Creating…" : "Create account"}
+              </Button>
+            </div>
 
             <p className="text-sm text-muted-foreground">
               Already have an account?{" "}

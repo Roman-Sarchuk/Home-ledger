@@ -5,22 +5,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const GITHUB_URL = "https://github.com/Roman-Sarchuk/Home-ledger";
+const LINKEDIN_URL = "https://www.linkedin.com/in/roman-sarchuk-267102323/";
 
 function Home() {
   return (
-    <div className="relative flex min-h-dvh flex-col overflow-hidden bg-gradient-to-b from-slate-50 via-slate-100 to-slate-200 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <div className="pointer-events-none absolute -left-32 top-10 size-80 rounded-full bg-sky-400/20 blur-3xl dark:bg-sky-500/10" />
-      <div className="pointer-events-none absolute -right-24 top-40 size-72 rounded-full bg-indigo-400/20 blur-3xl dark:bg-indigo-500/10" />
+    <div className="relative flex min-h-dvh flex-col overflow-hidden bg-background">
+      <div className="pointer-events-none absolute -left-32 top-10 size-96 rounded-full bg-primary/12 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 top-40 size-80 rounded-full bg-accent/10 blur-3xl" />
 
       <header className="border-b bg-background/80 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+          <div className="flex items-center gap-3">
+            <span className="inline-flex size-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg">
               <Wallet className="size-5" />
             </span>
-            <span className="font-heading text-sm font-semibold">Home-ledger</span>
+            <span className="font-heading text-base font-bold">Home-ledger</span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <Button variant="ghost" size="sm" asChild>
               <Link to="/login">Увійти</Link>
             </Button>
@@ -31,22 +32,25 @@ function Home() {
         </div>
       </header>
 
-      <main className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col gap-20 px-4 py-16 md:py-20">
-        <section className="rounded-3xl border border-white/60 bg-gradient-to-br from-slate-50 to-slate-200 p-8 shadow-lg backdrop-blur-sm dark:border-slate-800 dark:from-slate-900 dark:to-slate-950 md:p-12">
-          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-            <div className="grid gap-6">
-              <p className="inline-flex w-fit items-center gap-2 rounded-full border bg-background/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground shadow-sm">
-                <Sparkles className="size-3.5 text-primary" />
+      <main className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col gap-32 px-6 py-20 md:py-28">
+        <section className="rounded-3xl border border-white/10 bg-gradient-to-br from-primary/5 via-transparent to-accent/3 p-10 shadow-xl backdrop-blur-sm md:p-16 lg:p-20">
+          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div className="grid gap-8">
+              <p className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-primary shadow-sm">
+                <Sparkles className="size-4 text-primary" />
                 Personal Finance Dashboard
               </p>
-              <h1 className="font-heading text-5xl font-extrabold tracking-tight text-balance md:text-6xl">
-                Контролюй свої фінанси легко
-              </h1>
+              <div className="space-y-4">
+                <h1 className="font-heading text-5xl font-extrabold tracking-tight text-balance md:text-6xl lg:text-7xl">
+                  Контролюй свої фінанси легко
+                </h1>
+                <div className="h-1 w-24 rounded-full bg-gradient-to-r from-primary to-accent" />
+              </div>
               <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
                 Домашня бухгалтерія для щоденного контролю доходів, витрат, рахунків і категорій. Прозора аналітика,
                 зручний інтерфейс і вся фінансова картина в одному місці.
               </p>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4 pt-2">
                 <Button size="lg" className="shadow-lg" asChild>
                   <Link to="/register">
                     Почати роботу
@@ -57,77 +61,109 @@ function Home() {
                   <Link to="/login">Увійти</Link>
                 </Button>
               </div>
-              <div className="grid gap-3 pt-2 text-sm text-muted-foreground sm:grid-cols-2">
-                <p className="flex items-center gap-2">
-                  <ShieldCheck className="size-4 text-emerald-600" />
-                  Безпечна авторизація та керування сесіями
-                </p>
-                <p className="flex items-center gap-2">
-                  <BarChart3 className="size-4 text-sky-600" />
-                  Розширена аналітика транзакцій
-                </p>
+              <div className="grid gap-4 pt-4 text-sm sm:grid-cols-2">
+                <div className="flex items-start gap-3 rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-4">
+                  <ShieldCheck className="size-5 flex-shrink-0 mt-0.5 text-emerald-600" />
+                  <span className="text-muted-foreground">Безпечна авторизація та керування сесіями</span>
+                </div>
+                <div className="flex items-start gap-3 rounded-lg border border-sky-500/20 bg-sky-500/5 p-4">
+                  <BarChart3 className="size-5 flex-shrink-0 mt-0.5 text-sky-600" />
+                  <span className="text-muted-foreground">Розширена аналітика транзакцій</span>
+                </div>
               </div>
             </div>
 
-            <Card className="border-0 bg-background/85 shadow-lg backdrop-blur">
-              <CardHeader>
-                <CardTitle className="text-lg">Швидкий старт</CardTitle>
+            <Card className="border border-white/20 bg-gradient-to-br from-background/90 to-background/70 shadow-2xl backdrop-blur">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-xl">Швидкий старт</CardTitle>
                 <CardDescription>
                   Три прості кроки, щоб почати контролювати особисті фінанси вже сьогодні.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="grid gap-4 text-sm text-muted-foreground">
-                <p>1. Створіть акаунт та налаштуйте профіль.</p>
-                <p>2. Додайте рахунки й категорії транзакцій.</p>
-                <p>3. Відстежуйте витрати та аналізуйте тенденції.</p>
+              <CardContent className="grid gap-6 text-sm text-muted-foreground">
+                <div className="space-y-1">
+                  <p className="font-semibold text-foreground">1. Створіть акаунт</p>
+                  <p>Налаштуйте профіль та персональні налаштування.</p>
+                </div>
+                <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                <div className="space-y-1">
+                  <p className="font-semibold text-foreground">2. Додайте рахунки</p>
+                  <p>Налаштуйте рахунки й категорії транзакцій.</p>
+                </div>
+                <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                <div className="space-y-1">
+                  <p className="font-semibold text-foreground">3. Аналізуйте данні</p>
+                  <p>Відстежуйте витрати та аналізуйте тенденції.</p>
+                </div>
               </CardContent>
             </Card>
           </div>
         </section>
 
-        <section className="grid gap-6">
-          <h2 className="font-heading text-3xl font-bold tracking-tight">Про проєкт</h2>
-          <Card className="border-0 shadow-lg">
-            <CardHeader className="pb-2">
-              <CardTitle className="flex items-center gap-2 text-xl">
-                <Wallet className="size-5 text-primary" />
+        <section className="grid gap-8">
+          <div>
+            <h2 className="font-heading text-4xl font-bold tracking-tight mb-2">Про проєкт</h2>
+            <div className="h-1 w-24 rounded-full bg-gradient-to-r from-primary to-accent" />
+          </div>
+          <Card className="border-border/50 shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader className="pb-4">
+              <CardTitle className="flex items-center gap-3 text-2xl">
+                <Wallet className="size-6 text-primary" />
                 Домашня бухгалтерія (Home-ledger)
               </CardTitle>
             </CardHeader>
-            <CardContent className="pt-2 text-base leading-relaxed text-muted-foreground">
+            <CardContent className="text-base leading-relaxed text-muted-foreground space-y-4">
               <p>
                 Це курсовий проєкт <span className="font-semibold text-foreground">«Домашня бухгалтерія»</span> —
                 веб-додаток для персонального обліку фінансів: керування рахунками, категоріями транзакцій,
                 перегляд історії операцій та аналітичних звітів.
               </p>
+              <p>
+                Проєкт розроблений з використанням сучасних технологій: <span className="font-semibold text-foreground">Node.js</span> та <span className="font-semibold text-foreground">Express</span> на бенд-енді,
+                та <span className="font-semibold text-foreground">React</span> з <span className="font-semibold text-foreground">TypeScript</span> на фронт-енді.
+              </p>
             </CardContent>
           </Card>
         </section>
 
-        <section className="grid gap-6 pb-6">
-          <h2 className="font-heading text-3xl font-bold tracking-tight">Розробник</h2>
-          <Card className="border-0 shadow-lg">
-            <CardContent className="flex flex-col gap-5 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <section className="grid gap-8 pb-8">
+          <div>
+            <h2 className="font-heading text-4xl font-bold tracking-tight mb-2">Розробник</h2>
+            <div className="h-1 w-24 rounded-full bg-gradient-to-r from-primary to-accent" />
+          </div>
+          <Card className="border-border/50 shadow-lg hover:shadow-xl transition-shadow">
+            <CardContent className="flex flex-col gap-8 pt-8 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="mb-1 inline-flex items-center gap-2 text-lg font-semibold text-foreground">
-                  <UserRound className="size-5 text-primary" />
+                <p className="mb-3 inline-flex items-center gap-3 text-xl font-semibold text-foreground">
+                  <UserRound className="size-6 text-primary" />
                   Сарчук Р. А.
                 </p>
-                <p className="text-sm text-muted-foreground">Група ПП-34 · Full-stack розробка</p>
+                <p className="text-base text-muted-foreground">Група ПП-34 · Full-stack розробка</p>
               </div>
-              <Button variant="outline" className="shadow-lg" asChild>
-                <a href={GITHUB_URL} target="_blank" rel="noreferrer noopener">
-                  <ExternalLink className="mr-2 size-4" />
-                  GitHub: Home-ledger
-                </a>
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button variant="outline" className="shadow-md hover:shadow-lg gap-2" asChild>
+                  <a href={GITHUB_URL} target="_blank" rel="noreferrer noopener">
+                    <ExternalLink className="size-4" />
+                    GitHub
+                  </a>
+                </Button>
+                <Button variant="outline" className="shadow-md hover:shadow-lg gap-2" asChild>
+                  <a href={LINKEDIN_URL} target="_blank" rel="noreferrer noopener">
+                    <ExternalLink className="size-4" />
+                    LinkedIn
+                  </a>
+                </Button>
+              </div>
             </CardContent>
           </Card>
         </section>
       </main>
 
-      <footer className="border-t py-6 text-center text-xs text-muted-foreground">
-        Home-ledger · {new Date().getFullYear()}
+      <footer className="border-t bg-background/50 backdrop-blur py-8 text-center text-sm text-muted-foreground">
+        <div className="space-y-2">
+          <p className="font-semibold">Home-ledger · {new Date().getFullYear()}</p>
+          <p>Домашня бухгалтерія для персонального обліку фінансів</p>
+        </div>
       </footer>
     </div>
   );

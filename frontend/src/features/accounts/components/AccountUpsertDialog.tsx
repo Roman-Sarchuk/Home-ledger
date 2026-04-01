@@ -84,8 +84,8 @@ export function AccountUpsertDialog(props: Props) {
           <DialogTitle>{isEdit ? "Edit account" : "New account"}</DialogTitle>
         </DialogHeader>
 
-        <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-2">
+        <form className="grid gap-5" onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="grid gap-3">
             <Label htmlFor="account-name">Name</Label>
             <Input id="account-name" {...form.register("name")} aria-invalid={!!form.formState.errors.name} />
             {form.formState.errors.name?.message ? (
@@ -93,7 +93,7 @@ export function AccountUpsertDialog(props: Props) {
             ) : null}
           </div>
 
-          <div className="grid gap-2">
+          <div className="grid gap-3">
             <Label>Currency</Label>
             <Controller
               control={form.control}
