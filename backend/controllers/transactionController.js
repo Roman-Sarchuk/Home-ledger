@@ -4,6 +4,7 @@ const { parseCursorPagination } = require("../utils/parsePagination");
 exports.getTransactions = async (req, res) => {
   // Get user input
   const userId = req.user.id;
+  const { accountId } = req.query;
   const cursorPagination = parseCursorPagination(
     req.query.nextCursor,
     req.query.limit
@@ -12,7 +13,8 @@ exports.getTransactions = async (req, res) => {
   // Perform logic
   const result = await transactionService.getTransactions(
     userId,
-    cursorPagination
+    cursorPagination,
+    accountId
   );
 
   // Send response
