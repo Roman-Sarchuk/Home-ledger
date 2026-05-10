@@ -98,7 +98,7 @@ function Home() {
             <span className="font-heading text-base font-bold tracking-tight">Home-ledger</span>
           </div>
           <nav className="flex items-center gap-2.5">
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground" asChild>
+            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground mx-100" asChild>
               <Link to="/login">Увійти</Link>
             </Button>
             <Button
