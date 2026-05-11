@@ -14,8 +14,21 @@ import {
   Clock3,
 } from "lucide-react";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+  CarouselDots,
+} from "@/components/ui/carousel";
 
 import { Button } from "@/components/ui/button";
+
+import img1 from "@/assets/img1.png";
+import img2 from "@/assets/img2.png";
+
+const images = [img1, img2];
 
 const GITHUB_URL = "https://github.com/Roman-Sarchuk/Home-ledger";
 const LINKEDIN_URL = "https://www.linkedin.com/in/roman-sarchuk-267102323/";
@@ -47,11 +60,34 @@ const FEATURES = [
   },
 ];
 
-const colorMap: Record<string, { border: string; bg: string; icon: string; glow: string }> = {
-  sky:     { border: "border-sky-500/25",    bg: "bg-sky-500/8",    icon: "text-sky-500",    glow: "shadow-sky-500/20" },
-  emerald: { border: "border-emerald-500/25", bg: "bg-emerald-500/8", icon: "text-emerald-500", glow: "shadow-emerald-500/20" },
-  violet:  { border: "border-violet-500/25", bg: "bg-violet-500/8", icon: "text-violet-500", glow: "shadow-violet-500/20" },
-  amber:   { border: "border-amber-500/25",  bg: "bg-amber-500/8",  icon: "text-amber-500",  glow: "shadow-amber-500/20" },
+const colorMap: Record<
+  string,
+  { border: string; bg: string; icon: string; glow: string }
+> = {
+  sky: {
+    border: "border-sky-500/25",
+    bg: "bg-sky-500/8",
+    icon: "text-sky-500",
+    glow: "shadow-sky-500/20",
+  },
+  emerald: {
+    border: "border-emerald-500/25",
+    bg: "bg-emerald-500/8",
+    icon: "text-emerald-500",
+    glow: "shadow-emerald-500/20",
+  },
+  violet: {
+    border: "border-violet-500/25",
+    bg: "bg-violet-500/8",
+    icon: "text-violet-500",
+    glow: "shadow-violet-500/20",
+  },
+  amber: {
+    border: "border-amber-500/25",
+    bg: "bg-amber-500/8",
+    icon: "text-amber-500",
+    glow: "shadow-amber-500/20",
+  },
 };
 
 const MOCK_TRANSACTIONS = [
@@ -82,7 +118,11 @@ const STEPS = [
   },
 ];
 
-const QUICK_BENEFITS = ["Безкоштовний старт", "Зрозумілий інтерфейс", "Фокус на щоденній користі"];
+const QUICK_BENEFITS = [
+  "Безкоштовний старт",
+  "Зрозумілий інтерфейс",
+  "Фокус на щоденній користі",
+];
 
 function Home() {
   return (
@@ -95,10 +135,17 @@ function Home() {
             <span className="inline-flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/70 text-primary-foreground shadow-lg shadow-primary/25">
               <Wallet className="size-4" />
             </span>
-            <span className="font-heading text-base font-bold tracking-tight">Home-ledger</span>
+            <span className="font-heading text-base font-bold tracking-tight">
+              Home-ledger
+            </span>
           </div>
           <nav className="flex items-center gap-2.5">
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground mx-100" asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground hover:text-foreground mx-100"
+              asChild
+            >
               <Link to="/login">Увійти</Link>
             </Button>
             <Button
@@ -134,12 +181,16 @@ function Home() {
                   </span>
                 </h1>
                 <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
-                  Home-ledger допомагає бачити реальну картину ваших грошей: рахунки, категорії,
-                  історія транзакцій і наочна аналітика в одному місці.
+                  Home-ledger допомагає бачити реальну картину ваших грошей:
+                  рахунки, категорії, історія транзакцій і наочна аналітика в
+                  одному місці.
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-3" style={{ animation: "fadeUp 0.45s 0.16s ease both" }}>
+              <div
+                className="flex flex-wrap gap-3"
+                style={{ animation: "fadeUp 0.45s 0.16s ease both" }}
+              >
                 <Button
                   size="lg"
                   className="group shadow-lg shadow-primary/30 transition-all hover:-translate-y-0.5 hover:shadow-primary/45"
@@ -150,12 +201,20 @@ function Home() {
                     <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-0.5" />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="border-border/60 bg-background/70" asChild>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-border/60 bg-background/70"
+                  asChild
+                >
                   <Link to="/login">Увійти в акаунт</Link>
                 </Button>
               </div>
 
-              <div className="flex flex-wrap gap-2.5" style={{ animation: "fadeUp 0.45s 0.24s ease both" }}>
+              <div
+                className="flex flex-wrap gap-2.5"
+                style={{ animation: "fadeUp 0.45s 0.24s ease both" }}
+              >
                 {QUICK_BENEFITS.map((item) => (
                   <span
                     key={item}
@@ -172,55 +231,25 @@ function Home() {
               className="rounded-3xl border border-border/60 bg-card/80 p-5 shadow-2xl shadow-primary/10 backdrop-blur md:p-6"
               style={{ animation: "fadeUp 0.5s 0.12s ease both" }}
             >
-              <div className="mb-5 flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-foreground">Огляд за тиждень</p>
-                  <p className="text-xs text-muted-foreground">Транзакції та баланс у реальному часі</p>
-                </div>
-                <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[11px] font-bold text-emerald-600">
-                  +12.4%
-                </span>
-              </div>
-
-              <div className="grid gap-2.5">
-                {MOCK_TRANSACTIONS.map((item) => (
-                  <div
-                    key={`${item.label}-${item.amount}`}
-                    className="flex items-center justify-between rounded-xl border border-border/60 bg-background/70 px-3.5 py-2.5"
-                  >
-                    <div>
-                      <p className="text-sm font-medium text-foreground">{item.label}</p>
-                      <p className="text-xs text-muted-foreground">{item.cat}</p>
-                    </div>
-                    <div className="flex items-center gap-1.5 text-sm font-semibold">
-                      {item.type === "in" ? (
-                        <ArrowUpRight className="size-4 text-emerald-500" />
-                      ) : (
-                        <ArrowDownRight className="size-4 text-rose-500" />
-                      )}
-                      <span className={item.type === "in" ? "text-emerald-600" : "text-rose-600"}>{item.amount}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-5 rounded-xl border border-border/60 bg-background/75 p-3.5">
-                <div className="mb-3 flex items-center justify-between text-xs text-muted-foreground">
-                  <span>Активність за 7 днів</span>
-                  <span>Оновлено щойно</span>
-                </div>
-                <div className="flex h-24 items-end gap-2">
-                  {BAR_HEIGHTS.map((h, i) => (
-                    <div key={BAR_DAYS[i]} className="flex flex-1 flex-col items-center gap-1.5">
-                      <div
-                        className="w-full rounded-md bg-gradient-to-t from-primary/85 to-accent/75"
-                        style={{ height: `${h}%` }}
-                      />
-                      <span className="text-[10px] font-medium text-muted-foreground">{BAR_DAYS[i]}</span>
-                    </div>
+              <Carousel className="w-full relative">
+                <CarouselContent className="h-[320px]">
+                  {images.map((src, index) => (
+                    <CarouselItem key={index}>
+                      <div className="h-[320px] w-full overflow-hidden rounded-2xl border border-border/40 shadow-lg">
+                        <img
+                          src={src}
+                          alt={`slide-${index}`}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                    </CarouselItem>
                   ))}
-                </div>
-              </div>
+                </CarouselContent>
+
+                {/* Виводимо крапочки під слайдером */}
+                <CarouselDots />
+
+              </Carousel>
             </div>
           </div>
         </section>
@@ -237,7 +266,8 @@ function Home() {
               </span>
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-              Зручні інструменти, які реально допомагають у щоденному керуванні грошима.
+              Зручні інструменти, які реально допомагають у щоденному керуванні
+              грошима.
             </p>
           </div>
 
@@ -253,8 +283,12 @@ function Home() {
                 >
                   <Icon className={`size-5 ${colorMap[color].icon}`} />
                 </div>
-                <h3 className="mb-2 font-heading text-base font-semibold text-foreground">{title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
+                <h3 className="mb-2 font-heading text-base font-semibold text-foreground">
+                  {title}
+                </h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {desc}
+                </p>
               </div>
             ))}
           </div>
@@ -265,19 +299,30 @@ function Home() {
             <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.15em] text-primary">
               <Clock3 className="size-3.5" /> Як це працює
             </p>
-            <h2 className="font-heading text-3xl font-bold tracking-tight md:text-5xl">Три прості кроки до порядку у фінансах</h2>
+            <h2 className="font-heading text-3xl font-bold tracking-tight md:text-5xl">
+              Три прості кроки до порядку у фінансах
+            </h2>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
             {STEPS.map(({ icon: Icon, title, desc }, i) => (
-              <div key={title} className="rounded-2xl border border-border/60 bg-card/65 p-6 backdrop-blur">
+              <div
+                key={title}
+                className="rounded-2xl border border-border/60 bg-card/65 p-6 backdrop-blur"
+              >
                 <div className="mb-4 flex items-center justify-between">
                   <span className="inline-flex size-10 items-center justify-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
                     <Icon className="size-5" />
                   </span>
-                  <span className="text-xs font-bold tracking-[0.16em] text-muted-foreground">0{i + 1}</span>
+                  <span className="text-xs font-bold tracking-[0.16em] text-muted-foreground">
+                    0{i + 1}
+                  </span>
                 </div>
-                <h3 className="mb-2 font-heading text-lg font-semibold">{title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
+                <h3 className="mb-2 font-heading text-lg font-semibold">
+                  {title}
+                </h3>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {desc}
+                </p>
               </div>
             ))}
           </div>
@@ -296,11 +341,18 @@ function Home() {
                 </span>
               </h2>
               <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-                Веб-додаток для персонального обліку фінансів: керування рахунками, категоріями транзакцій,
-                перегляд історії операцій та аналітичних звітів.
+                Веб-додаток для персонального обліку фінансів: керування
+                рахунками, категоріями транзакцій, перегляд історії операцій та
+                аналітичних звітів.
               </p>
               <div className="mt-6 flex flex-wrap gap-2">
-                {["Node.js", "Express", "React", "TypeScript", "PostgreSQL"].map((tech) => (
+                {[
+                  "Node.js",
+                  "Express",
+                  "React",
+                  "TypeScript",
+                  "MongoDB",
+                ].map((tech) => (
                   <span
                     key={tech}
                     className="rounded-full border border-border/60 bg-muted/50 px-3 py-1 text-xs font-semibold text-foreground/75"
@@ -319,13 +371,18 @@ function Home() {
                     РС
                   </div>
                   <div>
-                    <p className="font-heading text-lg font-bold text-foreground">Сарчук Р. А.</p>
-                    <p className="text-sm text-muted-foreground">Група ПП-34 · Full-stack розробка</p>
+                    <p className="font-heading text-lg font-bold text-foreground">
+                      Сарчук Р. А.
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Група ПП-34 · Full-stack розробка
+                    </p>
                   </div>
                 </div>
                 <p className="mb-6 text-sm leading-relaxed text-muted-foreground">
-                  Розробник цього проєкту — студент, що захоплюється сучасними веб-технологіями
-                  та будує зручні застосунки для реальних задач.
+                  Розробник цього проєкту — студент, що захоплюється сучасними
+                  веб-технологіями та будує зручні застосунки для реальних
+                  задач.
                 </p>
                 <div className="flex gap-3">
                   <Button
@@ -333,7 +390,11 @@ function Home() {
                     className="flex-1 gap-2 border-border/60 shadow-sm hover:-translate-y-px hover:shadow-md transition-all"
                     asChild
                   >
-                    <a href={GITHUB_URL} target="_blank" rel="noreferrer noopener">
+                    <a
+                      href={GITHUB_URL}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
                       <FaGithub className="size-4" />
                       GitHub
                     </a>
@@ -343,7 +404,11 @@ function Home() {
                     className="flex-1 gap-2 border-sky-500/30 bg-sky-500/5 text-sky-600 hover:bg-sky-500/10 hover:-translate-y-px hover:shadow-md transition-all"
                     asChild
                   >
-                    <a href={LINKEDIN_URL} target="_blank" rel="noreferrer noopener">
+                    <a
+                      href={LINKEDIN_URL}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
                       <FaLinkedinIn className="size-4" />
                       LinkedIn
                     </a>
@@ -369,7 +434,8 @@ function Home() {
                 </span>
               </h2>
               <p className="mx-auto mt-4 mb-8 max-w-md text-muted-foreground">
-                Реєстрація займає менше хвилини. Почни відстежувати доходи і витрати вже зараз.
+                Реєстрація займає менше хвилини. Почни відстежувати доходи і
+                витрати вже зараз.
               </p>
               <Button
                 size="lg"
@@ -392,11 +458,15 @@ function Home() {
             <span className="inline-flex size-7 items-center justify-center rounded-lg bg-primary/15">
               <Wallet className="size-3.5 text-primary" />
             </span>
-            <span className="font-semibold text-foreground/70">Home-ledger</span>
+            <span className="font-semibold text-foreground/70">
+              Home-ledger
+            </span>
             <span className="text-border">·</span>
             <span>{new Date().getFullYear()}</span>
           </div>
-          <p className="text-xs">Домашня бухгалтерія для персонального обліку фінансів</p>
+          <p className="text-xs">
+            Домашня бухгалтерія для персонального обліку фінансів
+          </p>
         </div>
       </footer>
 
