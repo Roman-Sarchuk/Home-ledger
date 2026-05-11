@@ -9,8 +9,6 @@ import {
   TrendingUp,
   PieChart,
   ReceiptText,
-  ArrowUpRight,
-  ArrowDownRight,
   Clock3,
 } from "lucide-react";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
@@ -18,8 +16,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
   CarouselDots,
 } from "@/components/ui/carousel";
 
@@ -90,16 +86,6 @@ const colorMap: Record<
   },
 };
 
-const MOCK_TRANSACTIONS = [
-  { label: "Зарплата", amount: "+₴42 000", type: "in", cat: "Дохід" },
-  { label: "Супермаркет", amount: "-₴1 340", type: "out", cat: "Їжа" },
-  { label: "Netflix", amount: "-₴299", type: "out", cat: "Розваги" },
-  { label: "Фріланс", amount: "+₴8 500", type: "in", cat: "Дохід" },
-];
-
-const BAR_HEIGHTS = [36, 62, 48, 79, 53, 88, 67];
-const BAR_DAYS = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
-
 const STEPS = [
   {
     icon: Wallet,
@@ -132,7 +118,7 @@ function Home() {
       <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-xl">
         <div className="mx-auto flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-3">
-            <span className="inline-flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/70 text-primary-foreground shadow-lg shadow-primary/25">
+            <span className="inline-flex size-9 items-center justify-center rounded-xl bg-linear-to-br from-primary to-primary/70 text-primary-foreground shadow-lg shadow-primary/25">
               <Wallet className="size-4" />
             </span>
             <span className="font-heading text-base font-bold tracking-tight">
@@ -170,7 +156,7 @@ function Home() {
               <div style={{ animation: "fadeUp 0.45s 0.08s ease both" }}>
                 <h1 className="max-w-2xl font-heading text-3xl font-extrabold leading-tight tracking-tight text-balance md:text-3xl lg:text-[3rem]">
                   Менше хаосу у витратах.
-                  <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  <span className="block bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
                     Більше впевненості у рішеннях.
                   </span>
                 </h1>
@@ -226,10 +212,10 @@ function Home() {
               style={{ animation: "fadeUp 0.5s 0.12s ease both" }}
             >
               <Carousel className="w-full relative">
-                <CarouselContent className="h-[320px]">
+                <CarouselContent className="h-80">
                   {images.map((src, index) => (
                     <CarouselItem key={index}>
-                      <div className="h-[320px] w-full overflow-hidden rounded-2xl border border-border/40 shadow-lg">
+                      <div className="h-80 w-full overflow-hidden rounded-2xl border border-border/40 shadow-lg">
                         <img
                           src={src}
                           alt={`slide-${index}`}
@@ -254,7 +240,7 @@ function Home() {
             </p>
             <h2 className="font-heading text-3xl font-bold tracking-tight text-balance md:text-5xl">
               Все, що потрібно для{" "}
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
                 фінансового контролю
               </span>
             </h2>
@@ -329,7 +315,7 @@ function Home() {
               </p>
               <h2 className="font-heading text-3xl font-bold tracking-tight text-balance md:text-5xl">
                 Домашня бухгалтерія —<br />
-                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
                   курсовий проєкт
                 </span>
               </h2>
@@ -353,7 +339,7 @@ function Home() {
             </div>
 
             <div className="relative rounded-2xl border border-border/50 bg-card/70 p-8 shadow-xl backdrop-blur">
-              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/4 to-transparent" />
+              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-linear-to-br from-primary/4 to-transparent" />
               <div className="relative">
                 <div className="mb-6 flex items-center gap-4">
                   <div className="flex size-14 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-2xl font-bold text-primary">
@@ -409,7 +395,7 @@ function Home() {
         </section>
 
         <section className="pb-24 pt-10 md:pb-28">
-          <div className="relative overflow-hidden rounded-3xl border border-primary/25 bg-gradient-to-br from-primary/12 via-background to-accent/10 p-10 text-center shadow-2xl md:p-16">
+          <div className="relative overflow-hidden rounded-3xl border border-primary/25 bg-linear-to-br from-primary/12 via-background to-accent/10 p-10 text-center shadow-2xl md:p-16">
             <div className="pointer-events-none absolute -left-20 -top-20 size-64 rounded-full bg-primary/15 blur-3xl" />
             <div className="pointer-events-none absolute -right-20 -bottom-20 size-64 rounded-full bg-accent/15 blur-3xl" />
             <div className="relative">
@@ -418,7 +404,7 @@ function Home() {
               </p>
               <h2 className="font-heading text-3xl font-bold tracking-tight text-balance md:text-5xl">
                 Готовий взяти фінанси{" "}
-                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
                   під контроль?
                 </span>
               </h2>
