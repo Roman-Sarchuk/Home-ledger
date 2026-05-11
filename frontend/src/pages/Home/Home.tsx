@@ -143,7 +143,7 @@ function Home() {
             <Button
               variant="ghost"
               size="sm"
-              className="text-muted-foreground hover:text-foreground mx-100"
+              className="text-muted-foreground hover:text-foreground"
               asChild
             >
               <Link to="/login">Увійти</Link>
