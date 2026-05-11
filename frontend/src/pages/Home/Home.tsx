@@ -130,7 +130,7 @@ function Home() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,hsl(var(--primary)/0.14),transparent_40%),radial-gradient(circle_at_85%_15%,hsl(var(--accent)/0.12),transparent_36%),radial-gradient(circle_at_50%_100%,hsl(var(--primary)/0.08),transparent_42%)]" />
 
       <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        <div className="mx-auto flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-3">
             <span className="inline-flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary/70 text-primary-foreground shadow-lg shadow-primary/25">
               <Wallet className="size-4" />
@@ -163,18 +163,12 @@ function Home() {
       </header>
 
       <main className="relative mx-auto flex w-full max-w-6xl flex-1 flex-col px-6">
-        <section className="py-14 md:py-20">
+        <section className="py-5 md:py-10">
+          
           <div className="grid gap-10 lg:grid-cols-[1fr_460px] lg:items-center">
             <div className="space-y-7">
-              <p
-                className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-primary"
-                style={{ animation: "fadeUp 0.45s ease both" }}
-              >
-                <Sparkles className="size-3.5" /> Зручний контроль фінансів
-              </p>
-
               <div style={{ animation: "fadeUp 0.45s 0.08s ease both" }}>
-                <h1 className="max-w-2xl font-heading text-4xl font-extrabold leading-tight tracking-tight text-balance md:text-6xl lg:text-[4rem]">
+                <h1 className="max-w-2xl font-heading text-3xl font-extrabold leading-tight tracking-tight text-balance md:text-3xl lg:text-[3rem]">
                   Менше хаосу у витратах.
                   <span className="block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                     Більше впевненості у рішеннях.
@@ -248,7 +242,6 @@ function Home() {
 
                 {/* Виводимо крапочки під слайдером */}
                 <CarouselDots />
-
               </Carousel>
             </div>
           </div>
@@ -346,20 +339,16 @@ function Home() {
                 аналітичних звітів.
               </p>
               <div className="mt-6 flex flex-wrap gap-2">
-                {[
-                  "Node.js",
-                  "Express",
-                  "React",
-                  "TypeScript",
-                  "MongoDB",
-                ].map((tech) => (
-                  <span
-                    key={tech}
-                    className="rounded-full border border-border/60 bg-muted/50 px-3 py-1 text-xs font-semibold text-foreground/75"
-                  >
-                    {tech}
-                  </span>
-                ))}
+                {["Node.js", "Express", "React", "TypeScript", "MongoDB"].map(
+                  (tech) => (
+                    <span
+                      key={tech}
+                      className="rounded-full border border-border/60 bg-muted/50 px-3 py-1 text-xs font-semibold text-foreground/75"
+                    >
+                      {tech}
+                    </span>
+                  ),
+                )}
               </div>
             </div>
 
