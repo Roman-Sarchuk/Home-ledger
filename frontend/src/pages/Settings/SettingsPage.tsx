@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useTheme } from "next-themes";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -110,7 +110,8 @@ export function SettingsPage() {
 
   const selectedTheme: ThemeMode =
     theme === "light" || theme === "dark" || theme === "system" ? theme : "system";
-  const canDelete = deleteForm.watch("confirmName").trim() === (user?.name?.trim() ?? "");
+  const confirmName = useWatch({ control: deleteForm.control, name: "confirmName" }) ?? "";
+  const canDelete = confirmName.trim() === (user?.name?.trim() ?? "");
 
   return (
     <div className="page mx-auto w-full max-w-3xl">

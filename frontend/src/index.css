@@ -2,11 +2,10 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
 
-@tailwind base;
+@import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
-@tailwind components;
-@tailwind utilities;
+
 
 /* 1. Use a more-intuitive box-sizing model */
 *, *::before, *::after {
@@ -14,9 +13,9 @@
 }
 
 /* 2. Remove default margin */
-*:not(dialog) {
+/* *:not(dialog) {
   margin: 0;
-}
+} */
 
 /* 3. Enable keyword animations */
 @media (prefers-reduced-motion: no-preference) {
