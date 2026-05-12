@@ -4,10 +4,22 @@ const { Category } = require("../models/Category");
 const Transaction = require("../models/Transaction");
 const APIError = require("../utils/APIError");
 
-const getTransactions = async (userId, cursorPagination = {}) => {
+const getTransactions = async (userId, cursorPagination = {}, accountId) => {
   const { nextCursor = null, limit = 10 } = cursorPagination;
 
   const filter = { userId };
+
+  if (accountId !== undefined) {
+    if (!mongoose.Types.ObjectId.isValid(accountId)) {
+      throw new APIError(
+        400,
+        "Incorrect parameters",
+        "Invalid accountId format. Must be a valid ObjectId"
+      );
+    }
+
+    filter.accountId = new mongoose.Types.ObjectId(accountId);
+  }
 
   // If nextCursor is provided, fetch items with _id < nextCursor
   if (nextCursor) {
