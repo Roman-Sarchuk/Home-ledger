@@ -18,11 +18,6 @@ jobs:
       # Opt into Node.js 24 for JavaScript actions to avoid Node 20 deprecation
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
-    defaults:
-      run:
-        # keep defaults but we'll also set per-step working-directory for robustness
-        working-directory: frontend
-
     steps:
       - uses: actions/checkout@v4
 
