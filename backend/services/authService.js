@@ -113,8 +113,33 @@ const forgotPassword = async (email) => {
   return { message: "Password reset link sent to your email" };
 };
 
+const resetPassword = async (token, newPassword) => {
+  // Validate user input
+  if (!token || token.trim() === "") {
+    throw new APIError(400, "Incorrect parameters", "Reset token is required");
+  } else if (!newPassword || newPassword.trim() === "") {
+    throw new APIError(400, "Incorrect parameters", "New password is required");
+  }
+
+  const user = await User.findOne({
+    resetPasswordToken: token,
+    resetPasswordExpire: { $gt: new Date() }, // Check if token is not expired
+  });
+  if (!user) throw new APIError(400, "Invalid or expired token");
+
+  const hashed = await hashPassword(newPassword);
+
+  user.passwordHash = hashed;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+  await user.save();
+
+  return { message: "Password reset successfully" };
+};
+
 module.exports = {
   register,
   login,
-  forgotPassword
+  forgotPassword,
+  resetPassword
 };

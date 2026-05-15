@@ -33,3 +33,15 @@ exports.forgotPassword = async (req, res) => {
   // Send response
   res.status(200).json(result);
 };
+
+exports.resetPassword = async (req, res) => {
+  // Get user input
+  const { token } = req.params;
+  const { password } = req.body;
+
+  // Perform logic
+  const result = await authService.resetPassword(token, password);
+
+  // Send response
+  res.status(200).json(result);
+};
