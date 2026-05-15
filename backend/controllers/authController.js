@@ -22,3 +22,14 @@ exports.login = async (req, res) => {
   // Send response
   res.status(200).json(result);
 };
+
+exports.forgotPassword = async (req, res) => {
+  // Get user input
+  const { email } = req.body;
+
+  // Perform logic
+  const result = await authService.forgotPassword(email);
+
+  // Send response
+  res.status(200).json(result);
+};
