@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const crypto = require('crypto');
 const User = require("../models/User");
 const { Category, DEFAULT_SYSTEM_CATEGORIES } = require("../models/Category");
 const hashPassword = require("../utils/hashPassword");
@@ -79,38 +80,43 @@ const forgotPassword = async (email) => {
   }
 
   const user = await User.findOne({ email });
-  if (!user) throw new APIError(404, "User not found");
 
-  // Generate reset token and expiration
-  const resetToken = generateToken(user.getId());
-  const resetPasswordExpire = new Date();
-  resetPasswordExpire.setMinutes(resetPasswordExpire.getMinutes() + 10); // Token expires in 10 minutes
+  // Prevent user enumeration: always respond with a generic message
+  const genericResponse = { message: 'If an account with that email exists, a password reset link has been sent.' };
+  if (!user) return genericResponse;
 
-  // Save token and expiration to user document
-  user.resetPasswordToken = resetToken;
+  // Generate a secure random token (raw sent in email) and store only its hash
+  const rawToken = crypto.randomBytes(32).toString('hex');
+  const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+
+  // Set expiration (10 minutes)
+  const resetPasswordExpire = new Date(Date.now() + 10 * 60 * 1000);
+
+  // Save hashed token and expiration to user document
+  user.resetPasswordToken = hashedToken;
   user.resetPasswordExpire = resetPasswordExpire;
   await user.save();
 
-  // Send reset email
-  const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+  // Send reset email with raw token
+  const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${rawToken}`;
 
-  const message = `
-  Hello!
-  We received a request to reset the password for your account. If this was you, click the link below (or copy and paste it into your browser) to set a new password:
+  const message = `\nHello!\nWe received a request to reset the password for your account. If this was you, click the link below (or copy and paste it into your browser) to set a new password:\n\n${resetUrl}\n\nThis link is valid for only 10 minutes. If you did not request a password reset, simply ignore this email. Your password will remain unchanged.\n`;
 
-  ${resetUrl}і
+  try {
+    await sendEmail({
+      to: user.email,
+      subject: "[Home Ledger] Password Reset Request",
+      message,
+    });
+  } catch (err) {
+    // rollback token on email failure
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+    throw new APIError(500, 'Email sending failed', 'Failed to send reset email');
+  }
 
-  This link is valid for only 10 minutes. If you did not request a password reset, simply ignore this email. Your password will remain unchanged.
-  `;
-
-
-  await sendEmail({
-    to: user.email,
-    subject: "[Home Ledger] Password Reset Request",
-    message,
-  });
-
-  return { message: "Password reset link sent to your email" };
+  return genericResponse;
 };
 
 const resetPassword = async (token, newPassword) => {
@@ -121,9 +127,12 @@ const resetPassword = async (token, newPassword) => {
     throw new APIError(400, "Incorrect parameters", "New password is required");
   }
 
+  // Hash provided raw token to compare with stored hash
+  const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
   const user = await User.findOne({
-    resetPasswordToken: token,
-    resetPasswordExpire: { $gt: new Date() }, // Check if token is not expired
+    resetPasswordToken: hashedToken,
+    resetPasswordExpire: { $gt: new Date() },
   });
   if (!user) throw new APIError(400, "Invalid or expired token");
 
