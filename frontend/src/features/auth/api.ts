@@ -20,3 +20,19 @@ export async function registerApi(payload: {
   return data;
 }
 
+export async function forgotPasswordApi(payload: { email: string }): Promise<{ message: string }> {
+  const { data } = await api.post<{ message: string }>("/auth/forgot-password", payload);
+  return data;
+}
+
+export async function resetPasswordApi(payload: {
+  token: string;
+  password: string;
+}): Promise<{ message: string }> {
+  const { token, password } = payload;
+  const { data } = await api.post<{ message: string }>(`/auth/reset-password/${token}`, {
+    password,
+  });
+  return data;
+}
+
