@@ -7,6 +7,8 @@ import { RouteErrorPage } from "@/app/router/RouteErrorPage";
 import Home from "@/pages/Home/Home";
 import { LoginPage } from "@/pages/Login/LoginPage";
 import { RegisterPage } from "@/pages/Register/RegisterPage";
+import { PasswordRecoveryPage } from "@/pages/PasswordRecovery/PasswordRecoveryPage";
+import { PasswordResetPage } from "@/pages/PasswordReset/PasswordResetPage";
 import { AccountsPage } from "@/pages/Accounts/AccountsPage";
 import { CategoriesPage } from "@/pages/Categories/CategoriesPage";
 import { TransactionsPage } from "@/pages/Transactions/TransactionsPage";
@@ -21,6 +23,8 @@ export const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/login", element: <LoginPage /> },
       { path: "/register", element: <RegisterPage /> },
+      { path: "/password-recovery", element: <PasswordRecoveryPage /> },
+      { path: "/reset-password/:token", element: <PasswordResetPage /> },
     ],
   },
   {

@@ -6,7 +6,13 @@ import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -29,11 +35,16 @@ export function LoginPage() {
 
   if (token) return <Navigate to="/accounts" replace />;
 
-  const from = (location.state as { from?: Location } | null)?.from?.pathname ?? "/accounts";
+  const from =
+    (location.state as { from?: Location } | null)?.from?.pathname ??
+    "/accounts";
 
   async function onSubmit(values: LoginValues) {
     try {
-      const data = await loginMutation.mutateAsync({ email: values.email, password: values.password });
+      const data = await loginMutation.mutateAsync({
+        email: values.email,
+        password: values.password,
+      });
       loginSuccess({ user: data.user, token: data.token }, values.rememberMe);
       toast.success("Welcome back");
       navigate(from, { replace: true });
@@ -61,7 +72,9 @@ export function LoginPage() {
                 aria-invalid={!!form.formState.errors.email}
               />
               {form.formState.errors.email?.message ? (
-                <p className="text-xs text-destructive">{form.formState.errors.email.message}</p>
+                <p className="text-xs text-destructive">
+                  {form.formState.errors.email.message}
+                </p>
               ) : null}
             </div>
 
@@ -75,25 +88,35 @@ export function LoginPage() {
                 aria-invalid={!!form.formState.errors.password}
               />
               {form.formState.errors.password?.message ? (
-                <p className="text-xs text-destructive">{form.formState.errors.password.message}</p>
+                <p className="text-xs text-destructive">
+                  {form.formState.errors.password.message}
+                </p>
               ) : null}
             </div>
 
-            <Controller
-              control={form.control}
-              name="rememberMe"
-              render={({ field }) => (
-                <div className="flex items-center gap-2.5 rounded-lg border border-border/70 bg-muted/35 px-3 py-2">
-                  <Checkbox
-                    id="rememberMe"
-                    checked={field.value}
-                    onCheckedChange={(v) => field.onChange(v === true)}
-                    onBlur={field.onBlur}
-                  />
-                  <Label htmlFor="rememberMe">Remember me</Label>
-                </div>
-              )}
-            />
+            <div className="flex justify-between">
+              <Controller
+                control={form.control}
+                name="rememberMe"
+                render={({ field }) => (
+                  <div className="flex items-center gap-2.5  px-3 py-2">
+                    <Checkbox
+                      id="rememberMe"
+                      checked={field.value}
+                      onCheckedChange={(v) => field.onChange(v === true)}
+                      onBlur={field.onBlur}
+                    />
+                    <Label htmlFor="rememberMe">Remember me</Label>
+                  </div>
+                )}
+              />
+              <Link
+                to="/password-recovery"
+                className="text-foreground underline underline-offset-4 flex items-center justify-end" 
+              >
+                <span>Forgot your password?</span>
+              </Link>
+            </div>
 
             <div className="grid gap-2 sm:grid-cols-2">
               <Button type="button" variant="outline" asChild>
@@ -109,7 +132,10 @@ export function LoginPage() {
 
             <p className="text-sm text-muted-foreground">
               No account?{" "}
-              <Link to="/register" className="text-foreground underline underline-offset-4">
+              <Link
+                to="/register"
+                className="text-foreground underline underline-offset-4"
+              >
                 Create one
               </Link>
             </p>
@@ -119,4 +145,3 @@ export function LoginPage() {
     </div>
   );
 }
-
