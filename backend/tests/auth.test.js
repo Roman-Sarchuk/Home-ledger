@@ -1,10 +1,13 @@
 const request = require("supertest");
-const app = require("../app");
 const mongoose = require("mongoose");
 const { MongoMemoryReplSet } = require("mongodb-memory-server");
 const User = require("../models/User");
 const { Category } = require("../models/Category");
-jest.mock("../utils/sendEmail", () => jest.fn());
+
+// Mock sendEmail before loading app so services/controllers get the mock
+jest.mock("../utils/sendEmail");
+const sendEmail = require("../utils/sendEmail");
+const app = require("../app");
 
 let mongoServer;
 require('dotenv').config();
@@ -23,6 +26,7 @@ describe("Auth API", () => {
       User.deleteMany({}),
       Category.deleteMany({}),
     ]);
+    if (sendEmail && sendEmail.mockClear) sendEmail.mockClear();
   });
 
   afterAll(async () => {
@@ -143,7 +147,8 @@ describe("Auth API", () => {
       });
 
       expect(res.statusCode).toEqual(200);
-      expect(res.body).toHaveProperty("message", "Password reset link sent to your email");
+      // service now returns a generic message to prevent user enumeration
+      expect(res.body).toHaveProperty("message", "If an account with that email exists, a password reset link has been sent.");
 
       // Перевіряємо, чи зберігся токен в БД
       const user = await User.findOne({ email: "forgot@example.com" });
@@ -160,13 +165,13 @@ describe("Auth API", () => {
       expect(res.body).toHaveProperty("detail");
     });
 
-    it("should return 404 if user does not exist", async () => {
+    it("should return generic 200 response if user does not exist", async () => {
       const res = await request(app).post("/api/v1/auth/forgot-password").send({
         email: "nonexistent@example.com",
       });
 
-      expect(res.statusCode).toEqual(404);
-      expect(res.body).toHaveProperty("detail");
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toHaveProperty("message", "If an account with that email exists, a password reset link has been sent.");
     });
   });
 
@@ -185,8 +190,17 @@ describe("Auth API", () => {
         email: "reset@example.com",
       });
 
-      const user = await User.findOne({ email: "reset@example.com" });
-      validToken = user.resetPasswordToken;
+      // Extract raw token from mocked sendEmail call (it contains the URL)
+      const call = sendEmail.mock.calls[0];
+      const sent = call && call[0] ? call[0] : null;
+      let rawToken = null;
+      if (sent && sent.message) {
+        const m = sent.message.match(/reset-password\/(\w+)/i);
+        if (m) rawToken = m[1];
+      }
+
+      // rawToken is what must be provided to the reset endpoint
+      validToken = rawToken;
     });
 
     it("should reset password with valid token (200)", async () => {
