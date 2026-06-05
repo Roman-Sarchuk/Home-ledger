@@ -113,7 +113,7 @@ const forgotPassword = async (email) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save();
-    throw new APIError(500, 'Email sending failed', 'Failed to send reset email');
+    throw new APIError(500, 'Email sending failed', 'Failed to send reset email' + err.message);
   }
 
   return genericResponse;
