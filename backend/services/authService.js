@@ -100,12 +100,13 @@ const forgotPassword = async (email) => {
   // Send reset email with raw token
   const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${rawToken}`;
 
-  const message = `\nHello!\nWe received a request to reset the password for your account. If this was you, click the link below (or copy and paste it into your browser) to set a new password:\n\n${resetUrl}\n\nThis link is valid for only 10 minutes. If you did not request a password reset, simply ignore this email. Your password will remain unchanged.\n`;
+  // const message = `\nHello!\nWe received a request to reset the password for your account. If this was you, click the link below (or copy and paste it into your browser) to set a new password:\n\n${resetUrl}\n\nThis link is valid for only 10 minutes. If you did not request a password reset, simply ignore this email. Your password will remain unchanged.\n`;
+  const message = `\nHello!\nWe received a request to reset the password for "${user.email}". If this was you, click the link below (or copy and paste it into your browser) to set a new password:\n\n${resetUrl}\n\nThis link is valid for only 10 minutes. If you did not request a password reset, simply ignore this email. Your password will remain unchanged.\n`;
 
   try {
     await sendEmail({
       to: user.email,
-      subject: "[Home Ledger] Password Reset Request",
+      subject: `[Home Ledger] Password Reset Request for ${user.name}`,
       message,
     });
   } catch (err) {
@@ -113,7 +114,7 @@ const forgotPassword = async (email) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save();
-    throw new APIError(500, 'Email sending failed', 'Failed to send reset email' + err.message);
+    throw new APIError(500, 'Email sending failed', err.message);
   }
 
   return genericResponse;
