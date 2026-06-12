@@ -21,10 +21,14 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-import img1 from "@/assets/img1.png";
-import img2 from "@/assets/img2.png";
+import accounts from "@/assets/accounts.png";
+import categories from "@/assets/categories.png";
+import transactions from "@/assets/transactions.png";
+import analyticsCircule from "@/assets/analytics-circule.png";
+import analyticsLiqudity from "@/assets/analytics-liqudity.png";
+import analyticsCashFlow from "@/assets/analytics-cash-flow.png";
 
-const images = [img1, img2];
+const images = [analyticsCircule, analyticsLiqudity, analyticsCashFlow, accounts, categories, transactions];
 
 const GITHUB_URL = "https://github.com/Roman-Sarchuk/Home-ledger";
 const LINKEDIN_URL = "https://www.linkedin.com/in/roman-sarchuk-267102323/";
