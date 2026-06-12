@@ -50,7 +50,7 @@ export function AnalyticsPage() {
   const [accountId, setAccountId] = useState("");
   const [dateFrom, setDateFrom] = useState(defaults.dateFrom);
   const [dateTo, setDateTo] = useState(defaults.dateTo);
-  const [pointLimit, setPointLimit] = useState(12);
+  const [pointLimit, setPointLimit] = useState(5);
 
   const [applied, setApplied] = useState<Applied | null>(null);
 
