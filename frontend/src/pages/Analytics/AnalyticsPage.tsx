@@ -119,12 +119,12 @@ export function AnalyticsPage() {
     <div className="page lg:grid-cols-[minmax(0,320px)_1fr] lg:items-start">
       <Card className="lg:sticky lg:top-24">
         <CardHeader>
-          <CardTitle>Аналітика</CardTitle>
-          <CardDescription>Оберіть звіт, рахунок і період</CardDescription>
+          <CardTitle>Analytics</CardTitle>
+          <CardDescription>Select a report, account, and date range</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-5">
           <div className="grid gap-3">
-            <Label>Тип звіту</Label>
+            <Label>Report type</Label>
             <Select
               value={reportKind}
               onValueChange={(v) => {
@@ -136,15 +136,15 @@ export function AnalyticsPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="categories">За категоріями</SelectItem>
-                <SelectItem value="liquidity">Ліквідність (залишок)</SelectItem>
-                <SelectItem value="cashflow">Рух коштів</SelectItem>
+                <SelectItem value="categories">By categories</SelectItem>
+                <SelectItem value="liquidity">Liquidity (balance)</SelectItem>
+                <SelectItem value="cashflow">Cash flow</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="grid gap-3">
-            <Label>Рахунок</Label>
+            <Label>Account</Label>
             <Select
               value={resolvedAccountId || undefined}
               onValueChange={(id) => {
@@ -152,7 +152,7 @@ export function AnalyticsPage() {
               }}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Оберіть рахунок" />
+                <SelectValue placeholder="Choose an account" />
               </SelectTrigger>
               <SelectContent>
                 {accounts.map((a) => (
@@ -165,18 +165,18 @@ export function AnalyticsPage() {
           </div>
 
           <div className="grid gap-3">
-            <Label htmlFor="dateFrom">Від (дата)</Label>
+            <Label htmlFor="dateFrom">From (date)</Label>
             <Input id="dateFrom" type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
           </div>
 
           <div className="grid gap-3">
-            <Label htmlFor="dateTo">До (дата)</Label>
+            <Label htmlFor="dateTo">To (date)</Label>
             <Input id="dateTo" type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
           </div>
 
           {reportKind !== "categories" ? (
             <div className="grid gap-3">
-              <Label htmlFor="pointLimit">Кількість точок (2–365)</Label>
+              <Label htmlFor="pointLimit">Number of points (2–365)</Label>
               <Input
                 id="pointLimit"
                 type="number"
@@ -189,7 +189,7 @@ export function AnalyticsPage() {
           ) : null}
 
           <Button type="button" onClick={onVisualize} disabled={!!activeQuery?.isFetching}>
-            {activeQuery?.isFetching ? "Завантаження…" : "Візуалізувати"}
+            {activeQuery?.isFetching ? "Loading…" : "Visualize"}
           </Button>
         </CardContent>
       </Card>
@@ -197,9 +197,9 @@ export function AnalyticsPage() {
       <div className="min-w-0">
         <Card>
           <CardHeader>
-            <CardTitle>Графіки</CardTitle>
+            <CardTitle>Charts</CardTitle>
             <CardDescription>
-              Прокрутіть область на мобільних, якщо графік широкий
+              Scroll the area on mobile if the chart is wider than the screen
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -207,12 +207,12 @@ export function AnalyticsPage() {
               <div className="min-w-[min(100%,640px)] p-4">
                 {!applied ? (
                   <p className="text-sm text-muted-foreground">
-                    Натисніть «Візуалізувати», щоб побачити дані.
+                    Click "Visualize" to see the data.
                   </p>
                 ) : activeQuery?.isError ? (
                   <p className="text-sm text-destructive">{getApiErrorMessage(activeQuery.error)}</p>
                 ) : activeQuery?.isLoading ? (
-                  <p className="text-sm text-muted-foreground">Завантаження…</p>
+                  <p className="text-sm text-muted-foreground">Loading…</p>
                 ) : applied.kind === "categories" && categoriesQ.data ? (
                   <CategoriesPieCharts
                     income={categoriesQ.data.income}
@@ -223,7 +223,7 @@ export function AnalyticsPage() {
                 ) : applied.kind === "cashflow" && cashFlowQ.data ? (
                   <CashFlowChart data={cashFlowQ.data.report} />
                 ) : (
-                  <p className="text-sm text-muted-foreground">Немає даних.</p>
+                  <p className="text-sm text-muted-foreground">No data available.</p>
                 )}
               </div>
             </div>
