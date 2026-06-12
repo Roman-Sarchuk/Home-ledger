@@ -54,7 +54,7 @@ export function CategoriesTable({ categories, isLoading, limit, onAddNew }: Prop
         + Add new category
       </Button>
 
-      <div className="surface">
+      <div className="surface overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>

@@ -40,8 +40,8 @@ export function CashFlowChart({ data }: Props) {
             }}
           />
           <Legend />
-          <Bar dataKey="income" name="Дохід" fill="var(--chart-2)" radius={[4, 4, 0, 0]} />
-          <Bar dataKey="expense" name="Витрата" fill="var(--chart-4)" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="income" name="Income" fill="var(--chart-2)" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="expense" name="Expense" fill="var(--chart-4)" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

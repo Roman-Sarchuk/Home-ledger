@@ -52,7 +52,7 @@ describe("Transaction API", () => {
       const categoryRes = await request(app)
         .post("/api/v1/categories")
         .set("Authorization", token)
-        .send({ name: "Food", type: "expense", icon: "🍔" });
+        .send({ name: "Salary", type: "income", icon: "💰" });
 
       const categoryId = categoryRes.body.category.id;
 
@@ -343,9 +343,7 @@ describe("Transaction API", () => {
         .set("Authorization", token);
 
       expect(accountCheck.statusCode).toEqual(200);
-      expect(accountCheck.body.account.balance).toEqual(
-        initialBalance + 150
-      );
+      expect(accountCheck.body.account.balance).toEqual(initialBalance - 150);
     });
 
     it("should return 404 when account not found", async () => {
@@ -525,7 +523,7 @@ describe("Transaction API", () => {
         .set("Authorization", token);
 
       const balanceAfterCreate = accountAfterCreate.body.account.balance;
-      expect(balanceAfterCreate).toEqual(100);
+      expect(balanceAfterCreate).toEqual(-100);
 
       // Update transaction amount
       const updateRes = await request(app)
@@ -538,12 +536,12 @@ describe("Transaction API", () => {
       expect(updateRes.statusCode).toEqual(200);
       expect(updateRes.body.transaction).toHaveProperty("amount", 150);
 
-      // Verify balance was updated atomically (difference = 150 - 100 = 50)
+      // Verify balance was updated atomically for an expense transaction
       const accountAfterUpdate = await request(app)
         .get(`/api/v1/accounts/${accountId}`)
         .set("Authorization", token);
 
-      expect(accountAfterUpdate.body.account.balance).toEqual(150);
+      expect(accountAfterUpdate.body.account.balance).toEqual(-150);
     });
 
     it("should update transaction categoryId", async () => {
@@ -774,7 +772,7 @@ describe("Transaction API", () => {
         .get(`/api/v1/accounts/${accountId}`)
         .set("Authorization", token);
 
-      expect(accountAfterCreate.body.account.balance).toEqual(150);
+      expect(accountAfterCreate.body.account.balance).toEqual(-150);
 
       // Delete transaction
       const deleteRes = await request(app)
@@ -858,22 +856,22 @@ describe("Transaction API", () => {
         .set("Authorization", token)
         .send({ accountId, categoryId, amount: 150 });
 
-      // Balance should be 450
+      // Balance should be -450
       let account = await request(app)
         .get(`/api/v1/accounts/${accountId}`)
         .set("Authorization", token);
-      expect(account.body.account.balance).toEqual(450);
+      expect(account.body.account.balance).toEqual(-450);
 
       // Delete tx2 (200)
       await request(app)
         .delete(`/api/v1/transactions/${tx2.body.transaction.id}`)
         .set("Authorization", token);
 
-      // Balance should be 250
+      // Balance should be -250
       account = await request(app)
         .get(`/api/v1/accounts/${accountId}`)
         .set("Authorization", token);
-      expect(account.body.account.balance).toEqual(250);
+      expect(account.body.account.balance).toEqual(-250);
 
       // Update tx1 from 100 to 75 (difference = -25)
       await request(app)
@@ -881,11 +879,11 @@ describe("Transaction API", () => {
         .set("Authorization", token)
         .send({ amount: 75 });
 
-      // Balance should be 225
+      // Balance should be -225
       account = await request(app)
         .get(`/api/v1/accounts/${accountId}`)
         .set("Authorization", token);
-      expect(account.body.account.balance).toEqual(225);
+      expect(account.body.account.balance).toEqual(-225);
 
       // Update tx3 from 150 to 300 (difference = +150)
       await request(app)
@@ -893,11 +891,11 @@ describe("Transaction API", () => {
         .set("Authorization", token)
         .send({ amount: 300 });
 
-      // Balance should be 375
+      // Balance should be -375
       account = await request(app)
         .get(`/api/v1/accounts/${accountId}`)
         .set("Authorization", token);
-      expect(account.body.account.balance).toEqual(375);
+      expect(account.body.account.balance).toEqual(-375);
     });
   });
 

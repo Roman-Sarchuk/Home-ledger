@@ -56,7 +56,7 @@ export function AccountsTable({ accounts, isLoading, limit, onAddNew }: Props) {
         + Add new account
       </Button>
 
-      <div className="surface">
+      <div className="surface overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
