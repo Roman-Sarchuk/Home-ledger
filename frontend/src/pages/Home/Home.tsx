@@ -215,7 +215,7 @@ function Home() {
                 <CarouselContent className="h-80">
                   {images.map((src, index) => (
                     <CarouselItem key={index}>
-                      <div className="h-80 w-full overflow-hidden rounded-2xl border border-border/40 shadow-lg">
+                      <div className="h-80 w-full overflow-hidden rounded-2xl border border-border/40 shadow">
                         <img
                           src={src}
                           alt={`slide-${index}`}
