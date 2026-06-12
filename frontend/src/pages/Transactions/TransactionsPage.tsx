@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { TransactionUpsertDialog } from "@/features/transactions/components/TransactionUpsertDialog";
 import { useDeleteTransaction, useTransactionsInfinite } from "@/features/transactions/hooks";
 import { useCategories } from "@/features/categories/hooks";
+import { useAccount } from "@/features/accounts/hooks";
 import { getApiErrorMessage } from "@/shared/api/errors";
 
 import type { Transaction } from "@/features/transactions/types";
@@ -24,6 +25,7 @@ function formatDate(value: string | Date) {
 export function TransactionsPage() {
   const [sp] = useSearchParams();
   const accountId = sp.get("accountId");
+  const accountQuery = useAccount(accountId ?? "");
 
   const [createOpen, setCreateOpen] = useState(false);
 
@@ -99,7 +101,9 @@ export function TransactionsPage() {
         <div>
           <h1 className="page-title">Transactions</h1>
           <p className="page-subtitle">
-            {accountId ? "Filtered by account" : "All transactions"}
+            {accountId
+              ? accountQuery.data?.account.name ?? "Selected account"
+              : "All transactions"}
           </p>
         </div>
 
@@ -215,7 +219,7 @@ export function TransactionsPage() {
                         tx.categoryId
                       )}
                     </TableCell>
-                    <TableCell className="max-w-[360px]">
+                    <TableCell className="max-w-90">
                       {tx.description ? tx.description : <span className="text-muted-foreground">—</span>}
                     </TableCell>
                     <TableCell className="text-right font-medium tabular-nums">

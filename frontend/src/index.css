@@ -119,7 +119,7 @@ h1, h2, h3, h4, h5, h6 {
   --secondary-foreground: oklch(0.31 0.03 238.8);
   --muted: oklch(0.95 0.01 97.2 / 0.8);
   --muted-foreground: oklch(0.48 0.03 234.1);
-  --accent: oklch(0.93 0.03 170.1);
+  --accent: oklch(78.331% 0.05766 183.461 / 0.734);
   --accent-foreground: oklch(0.29 0.04 211.8);
   --destructive: oklch(0.63 0.21 27.8);
   --border: oklch(0.86 0.02 98.7 / 0.85);

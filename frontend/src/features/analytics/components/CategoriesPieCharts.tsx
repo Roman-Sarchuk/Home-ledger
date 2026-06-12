@@ -68,8 +68,8 @@ type Props = {
 export function CategoriesPieCharts({ income, expense }: Props) {
   return (
     <div className="grid gap-8 md:grid-cols-2">
-      <PieBlock title="Доходи" side={income} />
-      <PieBlock title="Витрати" side={expense} />
+      <PieBlock title="Income" side={income} />
+      <PieBlock title="Expense" side={expense} />
     </div>
   );
 }

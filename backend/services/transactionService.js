@@ -3,6 +3,17 @@ const Account = require("../models/Account");
 const { Category } = require("../models/Category");
 const Transaction = require("../models/Transaction");
 const APIError = require("../utils/APIError");
+const { getTransactionBalanceChange } = require("../utils/transactionBalance");
+
+const getCategoryByIdOrThrow = async (userId, categoryId) => {
+  const category = await Category.findOne({ _id: categoryId, userId });
+
+  if (!category) {
+    throw new APIError(404, "Category not found");
+  }
+
+  return category;
+};
 
 const getTransactions = async (userId, cursorPagination = {}, accountId) => {
   const { nextCursor = null, limit = 10 } = cursorPagination;
@@ -92,10 +103,7 @@ const createTransaction = async (
   }
 
   // Verify category exists and belongs to user
-  const category = await Category.findOne({ _id: categoryId, userId });
-  if (!category) {
-    throw new APIError(404, "Category not found");
-  }
+  const category = await getCategoryByIdOrThrow(userId, categoryId);
 
   // Create transaction with atomic balance update
   const session = await mongoose.startSession();
@@ -117,9 +125,11 @@ const createTransaction = async (
       createdTransaction = await transaction.save({ session });
 
       // Update account balance
+      const balanceChange = getTransactionBalanceChange(category.type, amount);
+
       await Account.findByIdAndUpdate(
         accountId,
-        { $inc: { balance: amount } },
+        { $inc: { balance: balanceChange } },
         { session }
       );
     });
@@ -168,13 +178,11 @@ const updateTransaction = async (
     }
   }
 
-  // Verify category if provided
-  if (categoryId !== undefined) {
-    const category = await Category.findOne({ _id: categoryId, userId });
-    if (!category) {
-      throw new APIError(404, "Category not found");
-    }
-  }
+  const currentCategory = await getCategoryByIdOrThrow(userId, transaction.categoryId);
+  const nextCategory =
+    categoryId !== undefined
+      ? await getCategoryByIdOrThrow(userId, categoryId)
+      : currentCategory;
 
   // Update with atomic balance adjustment if amount changed
   const session = await mongoose.startSession();
@@ -192,17 +200,29 @@ const updateTransaction = async (
         transaction.description = description || null;
       }
 
-      // Update balance if amount changed
-      if (amount !== undefined && amount !== transaction.amount) {
-        const balanceDifference = amount - transaction.amount;
+      const nextAmount = amount !== undefined ? amount : transaction.amount;
+      const currentBalanceChange = getTransactionBalanceChange(
+        currentCategory.type,
+        transaction.amount
+      );
+      const nextBalanceChange = getTransactionBalanceChange(
+        nextCategory.type,
+        nextAmount
+      );
+      const balanceDifference = nextBalanceChange - currentBalanceChange;
 
+      if (balanceDifference !== 0) {
         await Account.findByIdAndUpdate(
           transaction.accountId,
           { $inc: { balance: balanceDifference } },
           { session }
         );
 
-        transaction.amount = amount;
+        transaction.amount = nextAmount;
+      }
+
+      if (categoryId !== undefined) {
+        transaction.categoryId = categoryId;
       }
 
       updatedTransaction = await transaction.save({ session });
@@ -240,10 +260,13 @@ const deleteTransaction = async (userId, transactionId) => {
         throw new APIError(404, "Transaction not found");
       }
 
-      // Subtract amount from account balance
+      const category = await getCategoryByIdOrThrow(userId, transaction.categoryId);
+      const balanceChange = getTransactionBalanceChange(category.type, transaction.amount);
+
+      // Reverse the transaction effect on the account balance
       await Account.findByIdAndUpdate(
         transaction.accountId,
-        { $inc: { balance: -transaction.amount } },
+        { $inc: { balance: -balanceChange } },
         { session }
       );
 
