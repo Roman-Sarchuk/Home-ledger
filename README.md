@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=32&duration=3000&pause=1000&color=10B981&center=true&vCenter=true&width=1000&lines=Full-stack+Finance+Tracker;React+19+%2B+Node.js+%2B+MongoDB;Smart+Analytics+%26+Tracking" />
+</p>
+
 # Home-ledger
 
 [![Frontend CI](https://github.com/Roman-Sarchuk/Home-ledger/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/Roman-Sarchuk/Home-ledger/actions/workflows/frontend-ci.yml)
@@ -18,51 +22,80 @@ The app is designed to help you:
 
 ---
 
-## Features
+## 📸 Project Preview
 
-### Core finance tools
-- Accounts overview with balances and pagination
-- Categories management with built-in system categories
-- Transactions CRUD with account, category, and amount tracking
-- Analytics views for cash flow, liquidity, and category distribution
+<details>
+  <summary><b>🏠 Landing & Authentication</b></summary>
+  <br/>
+  
+  <img width="1885" height="966" alt="home" src="https://github.com/user-attachments/assets/0388ce8b-dcac-4aee-bd7e-aa71d1f8020e" />
 
-### Authentication and access
-- Register, login, logout, and protected app routes
-- Password recovery and password reset flows
-- JWT authentication stored on the backend side
+  | <img width="1880" height="948" alt="login" src="https://github.com/user-attachments/assets/9f6a13a0-186c-429c-a9ec-e3b426948272" /> | <img width="1880" height="948" alt="login" src="https://github.com/user-attachments/assets/6e7b181b-4fc4-49e1-a18b-e19595ac8dff" /> |
+  | :-: | :-: |
+  
+</details>
 
-### UX and quality
-- Responsive interface for desktop and smaller screens
-- Query-driven frontend architecture with React Query
-- Form validation with React Hook Form and Zod
-- Reusable UI primitives built with Radix/shadcn-style components
+<details>
+  <summary><b>💼 Core Application Pages</b></summary>
+  <br/>
 
----
+  <img width="1897" height="965" alt="accounts" src="https://github.com/user-attachments/assets/88864a92-9744-4982-985c-5ca62b310701" />
+  <img width="1873" height="954" alt="categories" src="https://github.com/user-attachments/assets/80862d66-364c-4858-946e-ffb2fb189f3c" />
+<img width="1872" height="954" alt="transactions" src="https://github.com/user-attachments/assets/de0de087-c798-46c6-b59e-284fc389ab4e" />
+<img width="1874" height="957" alt="settings" src="https://github.com/user-attachments/assets/d925fbed-d596-466e-ac9b-8914e6e44c4b" />
 
-## Tech Stack
+</details>
 
-### Frontend
-- React 19
-- TypeScript
-- Vite
-- Tailwind CSS
-- React Router
-- TanStack Query
-- React Hook Form + Zod
-- Recharts
-- Zustand
+<details>
+  <summary><b>📈 Analytics & Insights</b></summary>
+  <br/>
 
-### Backend
-- Node.js
-- Express
-- MongoDB with Mongoose
-- JWT authentication
-- Nodemailer and optional Resend integration for email delivery
-- Jest, Supertest, and mongodb-memory-server for tests
+  <img width="1869" height="957" alt="analytics-circule" src="https://github.com/user-attachments/assets/e9571031-b07c-4a38-82d3-3c05f73cca27" />
+
+| <img width="1888" height="958" alt="analytics-liqudity" src="https://github.com/user-attachments/assets/0f31eb62-6d40-4906-8821-ea7a100d0e92" /> | <img width="1873" height="957" alt="analytics-cash-flow" src="https://github.com/user-attachments/assets/57c6c0b8-c2ae-489e-86c9-dbdba9134ce8" /> |
+  | :-: | :-: |
+
+</details>
 
 ---
 
-## Project Structure
+## ✨ Core Features
+
+* **💳 Comprehensive Finance Tools:** Track balances across multiple accounts, organize spending with categories, and manage full transaction history (CRUD flows).
+* **📊 Advanced Analytics:** Visualize cash flow, liquidity, and category breakdowns with interactive charts.
+* **🔐 Secure Authentication:** Protected app routes with JWT authentication securely stored on the backend side.
+* **📬 Robust Password Recovery:** API-backed password reset flow utilizing Resend API and Nodemailer.
+* **⚡ Modern UX Architecture:** Query-driven frontend (React Query), form validation (Zod), and reusable UI primitives built with Radix/shadcn-style components.
+
+---
+
+## 🛠 Technology Stack
+
+### 💻 Frontend
+![React](https://img.shields.io/badge/React-19.x-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.x-06B6D4?logo=tailwind-css&logoColor=white)
+![TanStack Query](https://img.shields.io/badge/TanStack%20Query-Data%20Fetching-FF4154?logo=reactquery&logoColor=white)
+![Recharts](https://img.shields.io/badge/Recharts-Analytics-FF7300?logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaWQ9ImNoYXJ0LWZsZXhpYmxlLWRhdGUtc3RhdC1zdGF0aXN0aWNzIiBzdHlsZT0iZW5hYmxlLWJhY2tncm91bmQ6bmV3IDAgMCAxNiAxNTsiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDE2IDE1IiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48cGF0aCBmaWxsPSIjRUVFRUVFIiBkPSJNMTQuNSwxNFYzaC00VjBoLTV2OWgtNHY1SDB2MWgxLjVoNGgxaDNoMWg0SDE2di0xSDE0LjV6IE0yLjUsMTR2LTRoM3Y0SDIuNXogTTYuNSwxNFY5VjFoM3YydjExSDYuNXogTTEwLjUsMTRWNGgzdjEwICBIMTAuNXoiLz48L3N2Zz4=&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-State-000000?logo=redux&logoColor=white)
+
+### ⚙️ Backend
+![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-Backend-000000?logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?logo=mongodb&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Auth-000000?logo=jsonwebtokens&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?logo=mongodb&logoColor=white)
+![Nodemailer](https://img.shields.io/badge/Nodemailer-SMTP-0F9D50?logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cGF0aCBkPSJtMzY5LjEgMzIxLjYtOC44LTEwLjIgNTYuNyA2Ni4yaDk1VjEzNC40eiIgc3R5bGU9Im9wYWNpdHk6LjY7ZmlsbDojZmZmIi8+PHBhdGggZD0ibTUxMiAxMzQuNC0xNTEuNyAxNzcgOC44IDEwLjJ6IiBzdHlsZT0ib3BhY2l0eTouNztmaWxsOiNmZmYiLz48cGF0aCBkPSJNMCAxMzQuNHYyNDMuMmgyMDguNXoiIHN0eWxlPSJmaWxsOiNmZmYiLz48cGF0aCBkPSJNNDE3IDM3Ny42IDIwOC41IDEzNC40djI0My4yIiBzdHlsZT0ib3BhY2l0eTouODtmaWxsOiNmZmYiLz48L3N2Zz4=&logoColor=white)
+![Resend](https://img.shields.io/badge/Resend-Email%20API-000000?logo=resend&logoColor=white)
+
+### 🧪 Testing & CI
+![Jest](https://img.shields.io/badge/Jest-Testing-C21325?logo=jest&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-CI-2088FF?logo=githubactions&logoColor=white)
+
+---
+
+## 📂 Project Structure
 
 ```text
 home-ledger/
@@ -90,12 +123,9 @@ home-ledger/
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
-### Prerequisites
-- Node.js 20 or newer
-- npm 9 or newer
-- MongoDB instance or MongoDB Atlas connection string
+> **Prerequisites:** Node.js 20+, npm 9+, and a MongoDB instance (or Atlas connection string).
 
 ### 1. Clone the repository
 
@@ -112,18 +142,23 @@ Create a `backend/.env` file with at least the following variables:
 PORT=3000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_long_random_secret
-FRONTEND_URL=http://localhost:5173
+NODE_ENV=development
 ```
 
 Optional email configuration for password recovery:
 
 ```env
+FRONTEND_URL=http://localhost:5173
+
+# resend configuration
 RESEND_API_KEY=
 RESEND_EMAIL_FROM=
 RESEND_EMAIL_TO=
+
+# nodemailer configuration
 EMAIL_HOST=
 EMAIL_PORT=
-EMAIL_SECURE=false
+EMAIL_SECURE=  #false/true
 EMAIL_USERNAME=
 EMAIL_PASSWORD=
 EMAIL_FROM=
@@ -139,89 +174,45 @@ cd ../frontend
 npm install
 ```
 
-### 4. Run locally
+### 4. Run locally (Requires two terminals)
 
-Start the backend first:
+Start the backend:
 
 ```bash
 cd backend
 npm run dev
 ```
 
-Then start the frontend in a second terminal:
+Start the frontend:
 
 ```bash
 cd frontend
 npm run dev
 ```
 
-The frontend will use `http://localhost:3000` by default for API requests unless you override `VITE_API_URL` in `frontend/.env`.
+> **Note:** The frontend defaults to `http://localhost:3000` for API requests unless `VITE_API_URL` is overridden in `frontend/.env`.
 
 ---
 
-## Available Scripts
+## 📜 Available Scripts
 
-### Backend
+### Backend (`/backend`):
 
-Run these from the `backend/` folder:
+* `npm run dev` – Start development server
+* `npm test` – Run Jest test suite
+* `npm run test:watch` – Run tests in watch mode
+* `npm run test:coverage` – Generate test coverage report
+* `npm run recalc:balances` – Utility script for balance recalculation
 
-```bash
-npm run dev
-npm test
-npm run test:watch
-npm run test:coverage
-npm run recalc:balances
-```
+### Frontend (`/frontend`):
 
-### Frontend
-
-Run these from the `frontend/` folder:
-
-```bash
-npm run dev
-npm run build
-npm run lint
-npm run preview
-```
+* `npm run dev` – Start Vite development server
+* `npm run build` – Build SPA for production
+* `npm run lint` – Run ESLint
+* `npm run preview` – Preview production build locally
 
 ---
 
-## Testing
+## 🌐 Connect
 
-The backend includes Jest-based tests for the main API areas, with MongoDB memory server support for isolated test runs.
-
-```bash
-cd backend
-npm test
-```
-
-To generate coverage:
-
-```bash
-cd backend
-npm run test:coverage
-```
-
----
-
-## CI / Branch Protection
-
-- `frontend-ci.yml` runs install, lint, and build checks for frontend changes.
-- `backend-ci.yml` runs backend dependency installation and test execution.
-- `main-protection.yml` restricts pull requests into `main` so they must come from `dev`.
-
----
-
-## Authentication and Email Flow
-
-- Authentication uses JWT tokens generated by the backend.
-- Password recovery sends a reset link to the user’s email.
-- If Resend is configured, email delivery uses the Resend API first.
-- Otherwise the backend falls back to SMTP via Nodemailer.
-
----
-
-## Notes
-
-- The frontend router exposes public pages for home, login, register, and password recovery, plus protected pages for accounts, categories, transactions, analytics, and settings.
-- The backend and frontend are intentionally separate, so local development usually requires two terminals.
+* **Developer LinkedIn:** [![LinkedIn](https://img.shields.io/badge/Roman_Sarchuk-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/roman-sarchuk-267102323/)
