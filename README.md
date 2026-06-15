@@ -1,0 +1,227 @@
+# Home-ledger
+
+[![Frontend CI](https://github.com/Roman-Sarchuk/Home-ledger/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/Roman-Sarchuk/Home-ledger/actions/workflows/frontend-ci.yml)
+[![Backend CI](https://github.com/Roman-Sarchuk/Home-ledger/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/Roman-Sarchuk/Home-ledger/actions/workflows/backend-ci.yml)
+[![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![React](https://img.shields.io/badge/React-19.x-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+
+Home-ledger is a full-stack personal finance tracker for managing accounts, categories, transactions, and analytics in one place. The frontend is built with React, Vite, and TypeScript, while the backend uses Express and MongoDB with JWT-based authentication.
+
+The app is designed to help you:
+- track balances across multiple accounts
+- organize spending and income with categories
+- review transaction history with editing and deletion flows
+- visualize cash flow, liquidity, and category breakdowns
+- recover passwords through email-based reset links
+
+---
+
+## Features
+
+### Core finance tools
+- Accounts overview with balances and pagination
+- Categories management with built-in system categories
+- Transactions CRUD with account, category, and amount tracking
+- Analytics views for cash flow, liquidity, and category distribution
+
+### Authentication and access
+- Register, login, logout, and protected app routes
+- Password recovery and password reset flows
+- JWT authentication stored on the backend side
+
+### UX and quality
+- Responsive interface for desktop and smaller screens
+- Query-driven frontend architecture with React Query
+- Form validation with React Hook Form and Zod
+- Reusable UI primitives built with Radix/shadcn-style components
+
+---
+
+## Tech Stack
+
+### Frontend
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router
+- TanStack Query
+- React Hook Form + Zod
+- Recharts
+- Zustand
+
+### Backend
+- Node.js
+- Express
+- MongoDB with Mongoose
+- JWT authentication
+- Nodemailer and optional Resend integration for email delivery
+- Jest, Supertest, and mongodb-memory-server for tests
+
+---
+
+## Project Structure
+
+```text
+home-ledger/
+├─ backend/                 # Express API, MongoDB models, services, and tests
+│  ├─ config/
+│  ├─ controllers/
+│  ├─ middleware/
+│  ├─ models/
+│  ├─ routes/
+│  ├─ services/
+│  ├─ scripts/
+│  ├─ tests/
+│  └─ utils/
+├─ frontend/                # React + Vite SPA
+│  ├─ src/
+│  │  ├─ app/
+│  │  ├─ components/
+│  │  ├─ features/
+│  │  ├─ pages/
+│  │  ├─ shared/
+│  │  └─ store/
+│  └─ vite.config.ts
+└─ .github/workflows/       # CI and branch protection workflows
+```
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Node.js 20 or newer
+- npm 9 or newer
+- MongoDB instance or MongoDB Atlas connection string
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Roman-Sarchuk/Home-ledger.git
+cd Home-ledger
+```
+
+### 2. Configure the backend
+
+Create a `backend/.env` file with at least the following variables:
+
+```env
+PORT=3000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_long_random_secret
+FRONTEND_URL=http://localhost:5173
+```
+
+Optional email configuration for password recovery:
+
+```env
+RESEND_API_KEY=
+RESEND_EMAIL_FROM=
+RESEND_EMAIL_TO=
+EMAIL_HOST=
+EMAIL_PORT=
+EMAIL_SECURE=false
+EMAIL_USERNAME=
+EMAIL_PASSWORD=
+EMAIL_FROM=
+```
+
+### 3. Install dependencies
+
+```bash
+cd backend
+npm install
+
+cd ../frontend
+npm install
+```
+
+### 4. Run locally
+
+Start the backend first:
+
+```bash
+cd backend
+npm run dev
+```
+
+Then start the frontend in a second terminal:
+
+```bash
+cd frontend
+npm run dev
+```
+
+The frontend will use `http://localhost:3000` by default for API requests unless you override `VITE_API_URL` in `frontend/.env`.
+
+---
+
+## Available Scripts
+
+### Backend
+
+Run these from the `backend/` folder:
+
+```bash
+npm run dev
+npm test
+npm run test:watch
+npm run test:coverage
+npm run recalc:balances
+```
+
+### Frontend
+
+Run these from the `frontend/` folder:
+
+```bash
+npm run dev
+npm run build
+npm run lint
+npm run preview
+```
+
+---
+
+## Testing
+
+The backend includes Jest-based tests for the main API areas, with MongoDB memory server support for isolated test runs.
+
+```bash
+cd backend
+npm test
+```
+
+To generate coverage:
+
+```bash
+cd backend
+npm run test:coverage
+```
+
+---
+
+## CI / Branch Protection
+
+- `frontend-ci.yml` runs install, lint, and build checks for frontend changes.
+- `backend-ci.yml` runs backend dependency installation and test execution.
+- `main-protection.yml` restricts pull requests into `main` so they must come from `dev`.
+
+---
+
+## Authentication and Email Flow
+
+- Authentication uses JWT tokens generated by the backend.
+- Password recovery sends a reset link to the user’s email.
+- If Resend is configured, email delivery uses the Resend API first.
+- Otherwise the backend falls back to SMTP via Nodemailer.
+
+---
+
+## Notes
+
+- The frontend router exposes public pages for home, login, register, and password recovery, plus protected pages for accounts, categories, transactions, analytics, and settings.
+- The backend and frontend are intentionally separate, so local development usually requires two terminals.
