@@ -6,6 +6,7 @@
 
 [![Frontend CI](https://github.com/Roman-Sarchuk/Home-ledger/actions/workflows/frontend-ci.yml/badge.svg)](https://github.com/Roman-Sarchuk/Home-ledger/actions/workflows/frontend-ci.yml)
 [![Backend CI](https://github.com/Roman-Sarchuk/Home-ledger/actions/workflows/backend-ci.yml/badge.svg)](https://github.com/Roman-Sarchuk/Home-ledger/actions/workflows/backend-ci.yml)
+[![codecov](https://codecov.io/github/Roman-Sarchuk/Home-ledger/graph/badge.svg?token=5EU00G9C7M)](https://codecov.io/github/Roman-Sarchuk/Home-ledger)
 [![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-19.x-61DAFB?logo=react&logoColor=black)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
