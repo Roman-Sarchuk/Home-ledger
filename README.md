@@ -47,6 +47,17 @@ The app is designed to help you:
 </details>
 
 <details>
+  <summary><b>🔒 Password recovery</b></summary>
+  <br/>
+
+| <img width="1898" height="967" alt="forgot password" src="https://github.com/user-attachments/assets/6426c82f-09df-4880-a525-451bf73e4803" /> | <img width="1902" height="967" alt="password recovery" src="https://github.com/user-attachments/assets/f8e5a2d1-c84e-451f-8190-02e89b2e440d" /> |
+  | :-: | :-: |
+
+<img width="1392" height="492" alt="email" src="https://github.com/user-attachments/assets/57aa1124-eac2-4cd1-806c-69cd065d4f04" />
+
+</details>
+
+<details>
   <summary><b>📈 Analytics & Insights</b></summary>
   <br/>
 
